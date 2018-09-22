@@ -64,9 +64,16 @@ public class TicTacToe implements Game {
     }
 
     private TicTacToe playValid(Mark mark, Position position, PlayState playstate) {
+        play(mark, position);
+        return updateGameState(mark, position, playstate);
+    }
+
+    private void play(Mark mark, Position position) {
         board = board.withMarkAtPosition(mark, position);
         winningEvaluation = winningEvaluation.evaluatedWith(board, mark);
+    }
 
+    private TicTacToe updateGameState(Mark mark, Position position, PlayState playstate) {
         if (winningEvaluation.isWon()) {
             return won(mark, position, playstate);
         }
