@@ -96,7 +96,7 @@ public class TicTacToeTest
     public void canPlayAnEmptyPosition() {
         aStartedGame().playMarkAtPosition(new Mark("x"), new Position(1, 1));
 
-        verify(gameListener, times(1)).playSuccessful(subject, new Mark("x"), new Position(1, 1));
+        verify(gameListener, times(1)).continuePlay(subject, new Mark("x"), new Position(1, 1));
     }
 
     @Test
@@ -104,19 +104,19 @@ public class TicTacToeTest
         startGame();
 
         subject.playMarkAtPosition(new Mark("x"), new Position(1, 1));
-        verify(gameListener, times(1)).playSuccessful(subject, new Mark("x"), new Position(1, 1));
+        verify(gameListener, times(1)).continuePlay(subject, new Mark("x"), new Position(1, 1));
 
         subject.playMarkAtPosition(new Mark("x"), new Position(2, 2));
         verify(gameListener, times(1)).invalidMark(subject, new Mark("x"));
 
         subject.playMarkAtPosition(new Mark("o"), new Position(2, 2));
-        verify(gameListener, times(1)).playSuccessful(subject, new Mark("o"), new Position(2, 2));
+        verify(gameListener, times(1)).continuePlay(subject, new Mark("o"), new Position(2, 2));
 
         subject.playMarkAtPosition(new Mark("o"), new Position(3, 3));
         verify(gameListener, times(1)).invalidMark(subject, new Mark("o"));
 
         subject.playMarkAtPosition(new Mark("x"), new Position(1, 2));
-        verify(gameListener, times(1)).playSuccessful(subject, new Mark("x"), new Position(1, 2));
+        verify(gameListener, times(1)).continuePlay(subject, new Mark("x"), new Position(1, 2));
     }
 
     @Test

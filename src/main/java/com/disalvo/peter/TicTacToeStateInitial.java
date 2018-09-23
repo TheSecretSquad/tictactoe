@@ -15,4 +15,14 @@ class TicTacToeStateInitial implements TicTacToeState {
     public PlayState play() {
         throw new GameExceptionNotStarted();
     }
+
+    @Override
+    public Turn nextTurn(Turn turn) {
+        return turn;
+    }
+
+    @Override
+    public void announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
+        throw new GameExceptionNotStarted();
+    }
 }

@@ -1,8 +1,10 @@
 package com.disalvo.peter;
 
+import static com.disalvo.peter.Play.PlayContext;
+import static com.disalvo.peter.TicTacToeState.StateAnnouncer;
 import static com.disalvo.peter.TicTacToeState.PlayState;
 
-public class TicTacToe implements Game {
+public class TicTacToe implements Game, PlayContext, StateAnnouncer {
     private static final Mark X = new Mark("x");
     private static final Mark O = new Mark("o");
 
@@ -40,66 +42,45 @@ public class TicTacToe implements Game {
 
     @Override
     public TicTacToe playMarkAtPosition(Mark mark, Position position) {
-        PlayState playState = state.play();
-
-        if (!turn.canPlay(mark)) {
-            return invalidMark(mark);
-        }
-
-        if (!board.isEmptyPosition(position)) {
-            return invalidPosition(mark, position);
-        }
-
-        return playValid(mark, position, playState);
+        Play play = new Play(mark, position, state.play(), this);
+        play.execute(turn, board);
+        return this;
     }
 
-    private TicTacToe invalidMark(Mark mark) {
+    @Override
+    public void invalidMark(Play play, Mark mark) {
         listener.invalidMark(this, mark);
-        return this;
     }
 
-    private TicTacToe invalidPosition(Mark mark, Position position) {
+    @Override
+    public void invalidPosition(Play play, Mark mark, Position position) {
         listener.invalidPosition(this, position, mark);
-        return this;
     }
 
-    private TicTacToe playValid(Mark mark, Position position, PlayState playstate) {
-        play(mark, position);
-        return updateGameState(mark, position, playstate);
-    }
-
-    private void play(Mark mark, Position position) {
+    @Override
+    public void applyValidPlay(Play play, Mark mark, Position position, PlayState playState) {
         board = board.withMarkAtPosition(mark, position);
         winningEvaluation = winningEvaluation.evaluatedWith(board, mark);
+        state = playState.nextState(winningEvaluation, board);
+        turn = turn.next(state);
+        state.announceTo(this, mark, position);
     }
 
-    private TicTacToe updateGameState(Mark mark, Position position, PlayState playstate) {
-        if (winningEvaluation.isWon()) {
-            return won(mark, position, playstate);
-        }
-
-        if (board.isFilled()) {
-            return stalemate(mark, position, playstate);
-        }
-
-        return playSuccessful(mark, position);
+    @Override
+    public StateAnnouncer continuePlay(TicTacToeState ticTacToeState, Mark mark, Position position) {
+        listener.continuePlay(this, mark, position);
+        return this;
     }
 
-    private TicTacToe won(Mark mark, Position position, PlayState playstate) {
-        state = playstate.won();
+    @Override
+    public StateAnnouncer winningPlay(TicTacToeState ticTacToeState, Mark mark, Position position) {
         listener.winningPlay(this, mark, position);
         return this;
     }
 
-    private TicTacToe stalemate(Mark mark, Position position, PlayState playstate) {
-        state = playstate.stalemate();
+    @Override
+    public StateAnnouncer stalemate(TicTacToeState ticTacToeState, Mark mark, Position position) {
         listener.stalemate(this, mark, position);
-        return this;
-    }
-
-    private TicTacToe playSuccessful(Mark mark, Position position) {
-        turn = turn.next();
-        listener.playSuccessful(this, mark, position);
         return this;
     }
 }

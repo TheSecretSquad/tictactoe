@@ -1,5 +1,9 @@
 package com.disalvo.peter;
 
+import static com.disalvo.peter.TicTacToeStateStopped.TicTacToeStateWon;
+import static com.disalvo.peter.TicTacToeStateStopped.TicTacToeStateStalemate;
+import static com.disalvo.peter.TicTacToeStateStopped.TicTacToeStateManualStop;
+
 class TicTacToeStateStarted implements TicTacToeState {
 
     @Override
@@ -9,32 +13,43 @@ class TicTacToeStateStarted implements TicTacToeState {
 
     @Override
     public TicTacToeState stop() {
-        return new TicTacToeStateStopped();
+        return new TicTacToeStateManualStop();
     }
 
     @Override
-    public PlayState play() {
-        return new PlayState(this);
+    public InPlayState play() {
+        return new InPlayState(this);
     }
 
-    private static class PlayState implements TicTacToeState.PlayState {
+    @Override
+    public Turn nextTurn(Turn turn) {
+        return turn.next();
+    }
+
+    @Override
+    public void announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
+        stateAnnouncer.continuePlay(this, mark, position);
+    }
+
+    private static class InPlayState implements TicTacToeState.PlayState {
 
         private final TicTacToeState startingState;
 
-        public PlayState(TicTacToeState startingState) {
+        public InPlayState(TicTacToeState startingState) {
             this.startingState = startingState;
         }
 
-        public TicTacToeState playEnded() {
+        @Override
+        public TicTacToeState nextState(WinningEvaluation winningEvaluation, Board board) {
+            if (winningEvaluation.isWon()) {
+                return new TicTacToeStateWon();
+            }
+
+            if (board.isFilled()) {
+                return new TicTacToeStateStalemate();
+            }
+
             return startingState;
-        }
-
-        public TicTacToeState won() {
-            return new TicTacToeStateStopped();
-        }
-
-        public TicTacToeState stalemate() {
-            return new TicTacToeStateStopped();
         }
     }
 }

@@ -9,6 +9,10 @@ class Turn {
         this.next = next;
     }
 
+    public Turn next(TicTacToeState state) {
+        return state.nextTurn(this);
+    }
+
     public Turn next() {
         return new Turn(next, current);
     }
