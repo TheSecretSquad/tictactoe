@@ -6,11 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="tictactoe" />
+        <module name="tictactoecore" />
+        <module name="tictactoeui" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="tictactoe" target="1.8" />
+      <module name="tictactoecore" target="1.8" />
+      <module name="tictactoeui" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
