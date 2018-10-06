@@ -3,13 +3,13 @@ package com.disalvo.peter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Board {
-    private static final int BoardSize = 9;
+class Board {
+    private static final int Size = 9;
 
     private final Map<Position, Mark> positions;
 
     public Board() {
-        this.positions = new HashMap<>();
+        this(new HashMap<>());
     }
 
     private Board(Map<Position, Mark> positions) {
@@ -26,15 +26,15 @@ public class Board {
         return new Board(newPositions);
     }
 
-    public boolean isPositionOccupiedByMark(Position position, Mark mark) {
-        return mark.equals(markAtPosition(position));
-    }
-
     private Mark markAtPosition(Position position) {
-        return this.positions.get(position);
+        return positions.get(position);
     }
 
     public boolean isFilled() {
-        return this.positions.size() == BoardSize;
+        return positions.size() == Size;
+    }
+
+    public boolean isPositionOccupiedByMark(Position position, Mark mark) {
+        return mark.equals(markAtPosition(position));
     }
 }

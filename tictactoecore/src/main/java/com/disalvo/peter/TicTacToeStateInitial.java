@@ -12,6 +12,16 @@ class TicTacToeStateInitial implements TicTacToeState {
     }
 
     @Override
+    public TicTacToeState won() {
+        return stop();
+    }
+
+    @Override
+    public TicTacToeState stalemate() {
+        return stop();
+    }
+
+    @Override
     public PlayState play() {
         throw new GameExceptionNotStarted();
     }
@@ -22,7 +32,7 @@ class TicTacToeStateInitial implements TicTacToeState {
     }
 
     @Override
-    public void announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
+    public TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
         throw new GameExceptionNotStarted();
     }
 }

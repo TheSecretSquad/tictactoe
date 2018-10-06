@@ -3,27 +3,43 @@ package com.disalvo.peter;
 import static com.disalvo.peter.Play.PlayContext;
 import static com.disalvo.peter.TicTacToeState.StateAnnouncer;
 import static com.disalvo.peter.TicTacToeState.PlayState;
+import static com.disalvo.peter.GameEndEvaluation.GameEndCondition;
+import static com.disalvo.peter.GameEndEvaluationNone.GameEndConditionNone;
 
 public class TicTacToe implements Game, PlayContext, StateAnnouncer {
     private static final Mark X = new Mark("x");
     private static final Mark O = new Mark("o");
 
     private final GameListener listener;
+    private final GameEndEvaluation gameEndEvaluation;
+    private GameEndCondition gameEndCondition;
     private TicTacToeState state;
     private Board board;
     private Turn turn;
-    private WinningEvaluation winningEvaluation;
 
     public TicTacToe(GameListener listener) {
-        this(listener, new TicTacToeStateInitial(), new Board(), new Turn(X, O), new WinningEvaluation());
+        this(
+                listener,
+                new GameEndEvaluationWon(new GameEndEvaluationStalemate(new GameEndEvaluationNone())),
+                new GameEndConditionNone(),
+                new TicTacToeStateInitial(),
+                new Board(),
+                new Turn(X, O)
+        );
     }
 
-    private TicTacToe(GameListener listener, TicTacToeState state, Board board, Turn turn, WinningEvaluation winningEvaluation) {
+    private TicTacToe(GameListener listener,
+                      GameEndEvaluation gameEndEvaluation,
+                      GameEndCondition gameEndCondition,
+                      TicTacToeState state,
+                      Board board,
+                      Turn turn) {
         this.listener = listener;
+        this.gameEndEvaluation = gameEndEvaluation;
         this.state = state;
         this.board = board;
         this.turn = turn;
-        this.winningEvaluation = winningEvaluation;
+        this.gameEndCondition = gameEndCondition;
     }
 
     @Override
@@ -60,8 +76,8 @@ public class TicTacToe implements Game, PlayContext, StateAnnouncer {
     @Override
     public void applyValidPlay(Play play, Mark mark, Position position, PlayState playState) {
         board = board.withMarkAtPosition(mark, position);
-        winningEvaluation = winningEvaluation.evaluatedWith(board, mark);
-        state = playState.nextState(winningEvaluation, board);
+        gameEndCondition = gameEndEvaluation.condition(board, mark);
+        state = playState.nextState(gameEndCondition);
         turn = turn.next(state);
         state.announceTo(this, mark, position);
     }

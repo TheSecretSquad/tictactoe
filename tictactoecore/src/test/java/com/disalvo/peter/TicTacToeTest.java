@@ -1,5 +1,6 @@
 package com.disalvo.peter;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -230,6 +231,22 @@ public class TicTacToeTest
         playToStalemate();
 
         verify(gameListener).stalemate(subject, new Mark("x"), new Position(1, 1));
+    }
+
+    @Test
+    public void playWinsBoardAndFillsBoardAtSameTimeReportsWinsGame() {
+        aStartedGame()
+                .playMarkAtPosition(new Mark("x"), new Position(1, 1))
+                .playMarkAtPosition(new Mark("o"), new Position(1, 2))
+                .playMarkAtPosition(new Mark("x"), new Position(2, 1))
+                .playMarkAtPosition(new Mark("o"), new Position(2, 2))
+                .playMarkAtPosition(new Mark("x"), new Position(3, 2))
+                .playMarkAtPosition(new Mark("o"), new Position(1, 3))
+                .playMarkAtPosition(new Mark("x"), new Position(2, 3))
+                .playMarkAtPosition(new Mark("o"), new Position(3, 3))
+                .playMarkAtPosition(new Mark("x"), new Position(3, 1));
+
+        verify(gameListener).winningPlay(subject, new Mark("x"), new Position(3, 1));
     }
 
     @Test(expected = GameExceptionAlreadyStopped.class)

@@ -3,6 +3,7 @@ package com.disalvo.peter;
 import static com.disalvo.peter.TicTacToeStateStopped.TicTacToeStateWon;
 import static com.disalvo.peter.TicTacToeStateStopped.TicTacToeStateStalemate;
 import static com.disalvo.peter.TicTacToeStateStopped.TicTacToeStateManualStop;
+import static com.disalvo.peter.GameEndEvaluation.GameEndCondition;
 
 class TicTacToeStateStarted implements TicTacToeState {
 
@@ -17,8 +18,18 @@ class TicTacToeStateStarted implements TicTacToeState {
     }
 
     @Override
-    public InPlayState play() {
-        return new InPlayState(this);
+    public TicTacToeState won() {
+        return new TicTacToeStateWon();
+    }
+
+    @Override
+    public TicTacToeState stalemate() {
+        return new TicTacToeStateStalemate();
+    }
+
+    @Override
+    public PlayState play() {
+        return new ProcessingPlayState(this);
     }
 
     @Override
@@ -27,29 +38,22 @@ class TicTacToeStateStarted implements TicTacToeState {
     }
 
     @Override
-    public void announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
+    public TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
         stateAnnouncer.continuePlay(this, mark, position);
+        return this;
     }
 
-    private static class InPlayState implements TicTacToeState.PlayState {
+    private static class ProcessingPlayState implements PlayState {
 
         private final TicTacToeState startingState;
 
-        public InPlayState(TicTacToeState startingState) {
+        public ProcessingPlayState(TicTacToeState startingState) {
             this.startingState = startingState;
         }
 
         @Override
-        public TicTacToeState nextState(WinningEvaluation winningEvaluation, Board board) {
-            if (winningEvaluation.isWon()) {
-                return new TicTacToeStateWon();
-            }
-
-            if (board.isFilled()) {
-                return new TicTacToeStateStalemate();
-            }
-
-            return startingState;
+        public TicTacToeState nextState(GameEndCondition gameEndCondition) {
+            return gameEndCondition.nextState(startingState);
         }
     }
 }

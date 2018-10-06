@@ -15,18 +15,19 @@ class Play {
         this.playContext = playContext;
     }
 
-    public void execute(Turn turn, Board board) {
+    public Play execute(Turn turn, Board board) {
         if(!turn.canPlay(mark)) {
             playContext.invalidMark(this, mark);
-            return;
+            return this;
         }
 
         if(!board.isEmptyPosition(position)) {
             playContext.invalidPosition(this, mark, position);
-            return;
+            return this;
         }
 
         playContext.applyValidPlay(this, mark, position, playState);
+        return this;
     }
 
     interface PlayContext {
