@@ -1,12 +1,11 @@
 package com.disalvo.peter;
 
-import static com.disalvo.peter.Play.PlayContext;
 import static com.disalvo.peter.TicTacToeState.StateAnnouncer;
 import static com.disalvo.peter.TicTacToeState.PlayState;
 import static com.disalvo.peter.GameEndEvaluation.GameEndCondition;
 import static com.disalvo.peter.GameEndEvaluationNone.GameEndConditionNone;
 
-public class TicTacToe implements Game, PlayContext, StateAnnouncer {
+public class TicTacToe implements Game, StateAnnouncer {
     private static final Mark X = new Mark("x");
     private static final Mark O = new Mark("o");
 
@@ -58,44 +57,40 @@ public class TicTacToe implements Game, PlayContext, StateAnnouncer {
 
     @Override
     public TicTacToe playMarkAtPosition(Mark mark, Position position) {
-        Play play = new Play(mark, position, state.play(), this);
-        play.execute(turn, board);
-        return this;
-    }
+        PlayState playState = state.play();
 
-    @Override
-    public void invalidMark(Play play, Mark mark) {
-        listener.invalidMark(this, mark);
-    }
+        if(!turn.canPlay(mark)) {
+            listener.invalidMark(this, mark);
+            return this;
+        }
 
-    @Override
-    public void invalidPosition(Play play, Mark mark, Position position) {
-        listener.invalidPosition(this, position, mark);
-    }
+        if(!board.isEmptyPosition(position)) {
+            listener.invalidPosition(this, position, mark);
+            return this;
+        }
 
-    @Override
-    public void applyValidPlay(Play play, Mark mark, Position position, PlayState playState) {
         board = board.withMarkAtPosition(mark, position);
         gameEndCondition = gameEndEvaluation.condition(board, mark);
         state = playState.nextState(gameEndCondition);
         turn = turn.next(state);
         state.announceTo(this, mark, position);
+        return this;
     }
 
     @Override
-    public StateAnnouncer continuePlay(TicTacToeState ticTacToeState, Mark mark, Position position) {
+    public StateAnnouncer continuePlay(Mark mark, Position position) {
         listener.continuePlay(this, mark, position);
         return this;
     }
 
     @Override
-    public StateAnnouncer winningPlay(TicTacToeState ticTacToeState, Mark mark, Position position) {
+    public StateAnnouncer winningPlay(Mark mark, Position position) {
         listener.winningPlay(this, mark, position);
         return this;
     }
 
     @Override
-    public StateAnnouncer stalemate(TicTacToeState ticTacToeState, Mark mark, Position position) {
+    public StateAnnouncer stalemate(Mark mark, Position position) {
         listener.stalemate(this, mark, position);
         return this;
     }

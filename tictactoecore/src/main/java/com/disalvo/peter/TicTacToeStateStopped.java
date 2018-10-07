@@ -48,7 +48,7 @@ abstract class TicTacToeStateStopped implements TicTacToeState {
 
         @Override
         public TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
-            stateAnnouncer.winningPlay(this, mark, position);
+            stateAnnouncer.winningPlay(mark, position);
             return this;
         }
     }
@@ -57,7 +57,7 @@ abstract class TicTacToeStateStopped implements TicTacToeState {
 
         @Override
         public TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
-            stateAnnouncer.stalemate(this, mark, position);
+            stateAnnouncer.stalemate(mark, position);
             return this;
         }
     }

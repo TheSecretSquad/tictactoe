@@ -23,10 +23,10 @@ interface TicTacToeState {
     }
 
     interface StateAnnouncer {
-        StateAnnouncer continuePlay(TicTacToeState ticTacToeState, Mark mark, Position position);
+        StateAnnouncer continuePlay(Mark mark, Position position);
 
-        StateAnnouncer winningPlay(TicTacToeState ticTacToeState, Mark mark, Position position);
+        StateAnnouncer winningPlay(Mark mark, Position position);
 
-        StateAnnouncer stalemate(TicTacToeState ticTacToeState, Mark mark, Position position);
+        StateAnnouncer stalemate(Mark mark, Position position);
     }
 }

@@ -39,7 +39,7 @@ class TicTacToeStateStarted implements TicTacToeState {
 
     @Override
     public TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
-        stateAnnouncer.continuePlay(this, mark, position);
+        stateAnnouncer.continuePlay(mark, position);
         return this;
     }
 
