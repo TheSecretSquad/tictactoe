@@ -15,18 +15,14 @@ abstract class TicTacToeStateStopped implements TicTacToeState {
 
     @Override
     public TicTacToeState won() {
-        throw new GameExceptionAlreadyStopped();
+        return stop();
     }
 
     @Override
-    public TicTacToeState stalemate() {
-        throw new GameExceptionAlreadyStopped();
-    }
+    public TicTacToeState stalemate() { return stop(); }
 
     @Override
-    public PlayState play() {
-        throw new GameExceptionAlreadyStopped();
-    }
+    public PlayState play() { throw new GameExceptionAlreadyStopped(); }
 
     @Override
     public Turn nextTurn(Turn turn) {
@@ -40,7 +36,7 @@ abstract class TicTacToeStateStopped implements TicTacToeState {
 
         @Override
         public TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
-            throw new GameExceptionAlreadyStopped();
+            return stop();
         }
     }
 
