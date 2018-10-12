@@ -4,12 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 
 class GameEndEvaluationWon extends GameEndEvaluationChain {
-    private static final Dimension LeftColumnDimension() { return new ColumnDimension(1); }
-    private static final Dimension CenterColumnDimension() { return new ColumnDimension(2); }
-    private static final Dimension RightColumnDimension() { return new ColumnDimension(3); }
-    private static final Dimension TopRowDimension() { return new RowDimension(1); }
-    private static final Dimension MiddleRowDimension() { return new RowDimension(2); }
-    private static final Dimension BottomRowDimension() { return new RowDimension(3); }
+    private static Dimension LeftColumnDimension() { return new ColumnDimension(1); }
+    private static Dimension CenterColumnDimension() { return new ColumnDimension(2); }
+    private static Dimension RightColumnDimension() { return new ColumnDimension(3); }
+    private static Dimension TopRowDimension() { return new RowDimension(1); }
+    private static Dimension MiddleRowDimension() { return new RowDimension(2); }
+    private static Dimension BottomRowDimension() { return new RowDimension(3); }
     private static Dimension TopLeftToBottomRightDiagonalDimension() {
         return new TopLeftToBottomRightDiagonalDimension();
     }
