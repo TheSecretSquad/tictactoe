@@ -2,6 +2,7 @@ package com.disalvo.peter;
 
 import java.util.Arrays;
 import java.util.List;
+import static com.disalvo.peter.TicTacToeState.PlayState.GameEndCondition;
 
 class GameEndEvaluationWon extends GameEndEvaluationChain {
     private static Dimension LeftColumnDimension() { return new ColumnDimension(1); }
@@ -34,9 +35,9 @@ class GameEndEvaluationWon extends GameEndEvaluationChain {
     }
 
     @Override
-    protected GameEndCondition condition(Board board, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
+    protected GameEndCondition condition(Grid grid, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
         for (Dimension dimension : AllDimensions) {
-            if (dimension.isFilledWithMarkOnBoard(mark, board)) {
+            if (dimension.isFilledWithMarkOnGrid(mark, grid)) {
                 return new GameEndConditionWon(dimension);
             }
         }
@@ -54,8 +55,8 @@ class GameEndEvaluationWon extends GameEndEvaluationChain {
             this.positions = positions;
         }
         
-        boolean isFilledWithMarkOnBoard(Mark mark, Board board) {
-            return positions.stream().allMatch(position -> board.isPositionOccupiedByMark(position, mark));
+        boolean isFilledWithMarkOnGrid(Mark mark, Grid grid) {
+            return positions.stream().allMatch(position -> grid.isPositionOccupiedByMark(position, mark));
         }
     }
 

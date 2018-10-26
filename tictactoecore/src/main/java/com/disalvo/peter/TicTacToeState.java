@@ -1,7 +1,5 @@
 package com.disalvo.peter;
 
-import static com.disalvo.peter.GameEndEvaluation.GameEndCondition;
-
 interface TicTacToeState {
 
     TicTacToeState start();
@@ -20,6 +18,10 @@ interface TicTacToeState {
 
     interface PlayState {
         TicTacToeState nextState(GameEndCondition gameEndCondition);
+
+        interface GameEndCondition {
+            TicTacToeState nextState(TicTacToeState ticTacToeState);
+        }
     }
 
     interface StateAnnouncer {

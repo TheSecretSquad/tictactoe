@@ -3,7 +3,6 @@ package com.disalvo.peter;
 import static com.disalvo.peter.TicTacToeStateStopped.TicTacToeStateWon;
 import static com.disalvo.peter.TicTacToeStateStopped.TicTacToeStateStalemate;
 import static com.disalvo.peter.TicTacToeStateStopped.TicTacToeStateManualStop;
-import static com.disalvo.peter.GameEndEvaluation.GameEndCondition;
 
 class TicTacToeStateStarted implements TicTacToeState {
 

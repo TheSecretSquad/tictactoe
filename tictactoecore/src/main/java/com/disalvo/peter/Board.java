@@ -1,40 +1,39 @@
 package com.disalvo.peter;
 
-import java.util.HashMap;
-import java.util.Map;
+import static com.disalvo.peter.TicTacToeState.PlayState.GameEndCondition;
+import static com.disalvo.peter.GameEndEvaluationNone.GameEndConditionNone;
 
-class Board {
-    private static final int Size = 9;
+class Board implements GameEndCondition {
 
-    private final Map<Position, Mark> positions;
+    private final Grid grid;
+    private final GameEndCondition condition;
+    private final GameEndEvaluation evaluation;
 
     public Board() {
-        this(new HashMap<>());
+        this(
+                new Grid(),
+                new GameEndConditionNone(),
+                new GameEndEvaluationWon(new GameEndEvaluationStalemate(new GameEndEvaluationNone()))
+        );
     }
 
-    private Board(Map<Position, Mark> positions) {
-        this.positions = positions;
+    private Board(Grid grid, GameEndCondition condition, GameEndEvaluation evaluation) {
+        this.grid = grid;
+        this.condition = condition;
+        this.evaluation = evaluation;
     }
 
     public boolean isEmptyPosition(Position position) {
-        return !positions.containsKey(position);
+        return grid.isEmptyPosition(position);
     }
 
     public Board withMarkAtPosition(Mark mark, Position position) {
-        Map<Position, Mark> newPositions = new HashMap<>(positions);
-        newPositions.put(position, mark);
-        return new Board(newPositions);
+        Grid nextGrid = grid.withMarkAtPosition(mark, position);
+        return new Board(nextGrid, nextGrid.condition(evaluation, mark), evaluation);
     }
 
-    private Mark markAtPosition(Position position) {
-        return positions.get(position);
-    }
-
-    public boolean isFilled() {
-        return positions.size() == Size;
-    }
-
-    public boolean isPositionOccupiedByMark(Position position, Mark mark) {
-        return mark.equals(markAtPosition(position));
+    @Override
+    public TicTacToeState nextState(TicTacToeState ticTacToeState) {
+        return condition.nextState(ticTacToeState);
     }
 }
