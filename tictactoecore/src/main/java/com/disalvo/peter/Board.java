@@ -4,14 +4,18 @@ import static com.disalvo.peter.TicTacToeState.PlayState.GameEndCondition;
 import static com.disalvo.peter.GameEndEvaluationNone.GameEndConditionNone;
 
 class Board implements GameEndCondition {
-
+    private static final int DEFAULT_SIZE = 9;
     private final Grid grid;
     private final GameEndCondition condition;
     private final GameEndEvaluation evaluation;
 
     public Board() {
+        this(DEFAULT_SIZE); // TODO: Create Size class? Size should be positive, even integer
+    }
+
+    public Board(int size) {
         this(
-                new Grid(),
+                new Grid(size),
                 new GameEndConditionNone(),
                 new GameEndEvaluationWon(new GameEndEvaluationStalemate(new GameEndEvaluationNone()))
         );

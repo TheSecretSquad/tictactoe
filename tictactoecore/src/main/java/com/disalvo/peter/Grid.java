@@ -5,15 +5,16 @@ import java.util.Map;
 import static com.disalvo.peter.TicTacToeState.PlayState.GameEndCondition;
 
 public class Grid {
-    private static final int Size = 9;
+    private final int size;
 
     private final Map<Position, Mark> positions;
 
-    public Grid() {
-        this(new HashMap<>());
+    public Grid(int size) {
+        this(size, new HashMap<>());
     }
 
-    private Grid(Map<Position, Mark> positions) {
+    private Grid(int size, Map<Position, Mark> positions) {
+        this.size = size;
         this.positions = positions;
     }
 
@@ -24,7 +25,7 @@ public class Grid {
     public Grid withMarkAtPosition(Mark mark, Position position) {
         Map<Position, Mark> newPositions = new HashMap<>(positions);
         newPositions.put(position, mark);
-        return new Grid(newPositions);
+        return new Grid(size, newPositions);
     }
 
     private Mark markAtPosition(Position position) {
@@ -32,7 +33,7 @@ public class Grid {
     }
 
     public boolean isFilled() {
-        return positions.size() == Size;
+        return positions.size() == size;
     }
 
     public boolean isPositionOccupiedByMark(Position position, Mark mark) {

@@ -47,6 +47,8 @@ public class TicTacToe implements Game, StateAnnouncer {
 
     @Override
     public TicTacToe playMarkAtPosition(Mark mark, Position position) {
+        // TODO: Implement Play object for validation and application
+        // TODO: Create separate package for Board
         PlayState playState = state.play();
 
         if(!turn.canPlay(mark)) {
