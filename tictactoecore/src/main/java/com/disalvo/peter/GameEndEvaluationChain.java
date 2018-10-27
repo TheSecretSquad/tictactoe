@@ -10,12 +10,12 @@ abstract class GameEndEvaluationChain implements GameEndEvaluation {
         this.evaluateIfNotPresent = evaluateIfNotPresent;
     }
 
-    @Override
-    public final GameEndCondition condition(Grid grid, Mark mark) {
-        return condition(grid, mark, () -> evaluateIfNotPresent.condition(grid, mark));
-    }
-
     protected abstract GameEndCondition condition(Grid grid, Mark mark, NotPresentEvaluation evaluateIfNotPresent);
+
+    @Override
+    public GameEndCondition result(Grid grid, Mark mark) {
+        return condition(grid, mark, () -> evaluateIfNotPresent.result(grid, mark));
+    }
 
     @FunctionalInterface
     interface NotPresentEvaluation {

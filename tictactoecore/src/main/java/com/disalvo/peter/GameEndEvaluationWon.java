@@ -1,23 +1,40 @@
 package com.disalvo.peter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import static com.disalvo.peter.TicTacToeState.PlayState.GameEndCondition;
-import static com.disalvo.peter.Grid.Dimensions;
-import static com.disalvo.peter.Grid.Dimension;
 
-class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions {
-    private static Dimension LeftColumnDimension() { return new ColumnDimension(1); }
-    private static Dimension CenterColumnDimension() { return new ColumnDimension(2); }
-    private static Dimension RightColumnDimension() { return new ColumnDimension(3); }
-    private static Dimension TopRowDimension() { return new RowDimension(1); }
-    private static Dimension MiddleRowDimension() { return new RowDimension(2); }
-    private static Dimension BottomRowDimension() { return new RowDimension(3); }
+import static com.disalvo.peter.Grid.Dimension;
+import static com.disalvo.peter.TicTacToeState.PlayState.GameEndCondition;
+
+class GameEndEvaluationWon extends GameEndEvaluationChain {
+    private static Dimension LeftColumnDimension() {
+        return new ColumnDimension(1);
+    }
+
+    private static Dimension CenterColumnDimension() {
+        return new ColumnDimension(2);
+    }
+
+    private static Dimension RightColumnDimension() {
+        return new ColumnDimension(3);
+    }
+
+    private static Dimension TopRowDimension() {
+        return new RowDimension(1);
+    }
+
+    private static Dimension MiddleRowDimension() {
+        return new RowDimension(2);
+    }
+
+    private static Dimension BottomRowDimension() {
+        return new RowDimension(3);
+    }
+
     private static Dimension TopLeftToBottomRightDiagonalDimension() {
         return new TopLeftToBottomRightDiagonalDimension();
     }
+
     private static Dimension TopRightToBottomLeftDiagonalDimension() {
         return new TopRightToBottomLeftDiagonalDimension();
     }
@@ -40,13 +57,12 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
 
     @Override
     protected GameEndCondition condition(Grid grid, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
-        WinningDimension dimension = grid.dimensionFilledByMarkOrDefault(this, mark, new EmptyDimension());
-        return dimension.condition(evaluateIfNotPresent);
-    }
-
-    @Override
-    public Iterator<Dimension> iterator() {
-        return AllDimensions.iterator();
+        for (Dimension dimension : AllDimensions) {
+            if (grid.isDimensionFilledWithMark(dimension, mark)) {
+                return new GameEndConditionWon(dimension);
+            }
+        }
+        return evaluateIfNotPresent.condition();
     }
 
     public static abstract class WinningDimension implements Dimension {
@@ -54,10 +70,6 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
 
         public WinningDimension(Position position1, Position position2, Position position3) {
             this(Arrays.asList(position1, position2, position3));
-        }
-
-        protected WinningDimension() {
-            this(new ArrayList<>());
         }
 
         private WinningDimension(List<Position> positions) {
@@ -68,14 +80,10 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
         public boolean isFilledWithMarkOnGrid(Mark mark, Grid grid) {
             return positions.stream().allMatch(position -> grid.isPositionOccupiedByMark(position, mark));
         }
-
-        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
-            return new GameEndConditionWon(this);
-        }
     }
 
     private static class ColumnDimension extends WinningDimension {
-        
+
         public ColumnDimension(int column) {
             super(new Position(1, column), new Position(2, column), new Position(3, column));
         }
@@ -98,14 +106,6 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
 
         public TopRightToBottomLeftDiagonalDimension() {
             super(new Position(1, 3), new Position(2, 2), new Position(3, 1));
-        }
-    }
-
-    private static class EmptyDimension extends WinningDimension {
-
-        @Override
-        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
-            return evaluateIfNotPresent.condition();
         }
     }
 

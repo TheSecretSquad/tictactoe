@@ -40,24 +40,20 @@ public class Grid {
         return mark.equals(markAtPosition(position));
     }
 
-    public GameEndCondition condition(GameEndEvaluation evaluation, Mark mark) {
-        return evaluation.condition(this, mark);
+    public <T> T evaluationResult(GridEvaluation<T> evaluation, Mark mark) {
+        return evaluation.result(this, mark);
     }
 
-    public <D extends Dimension> D dimensionFilledByMarkOrDefault(Dimensions<D> dimensions, Mark mark, D defaultDimension) {
-        for(D dimension : dimensions) {
-            if(dimension.isFilledWithMarkOnGrid(mark, this)) {
-                return dimension;
-            }
-        }
-        return defaultDimension;
+    public boolean isDimensionFilledWithMark(Dimension dimension, Mark mark) {
+        return dimension.isFilledWithMarkOnGrid(mark, this);
     }
 
     interface Dimension {
         boolean isFilledWithMarkOnGrid(Mark mark, Grid grid);
     }
 
-    interface Dimensions<T extends Dimension> extends Iterable<T> {
+    interface GridEvaluation<T> {
 
+        T result(Grid grid, Mark mark);
     }
 }

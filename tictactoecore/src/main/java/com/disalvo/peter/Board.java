@@ -33,7 +33,7 @@ class Board implements GameEndCondition {
 
     public Board withMarkAtPosition(Mark mark, Position position) {
         Grid nextGrid = grid.withMarkAtPosition(mark, position);
-        return new Board(nextGrid, nextGrid.condition(evaluation, mark), evaluation);
+        return new Board(nextGrid, nextGrid.evaluationResult(evaluation, mark), evaluation);
     }
 
     @Override

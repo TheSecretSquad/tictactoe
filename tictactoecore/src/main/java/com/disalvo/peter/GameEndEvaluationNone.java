@@ -3,7 +3,7 @@ import static com.disalvo.peter.TicTacToeState.PlayState.GameEndCondition;
 
 public class GameEndEvaluationNone implements GameEndEvaluation {
     @Override
-    public GameEndCondition condition(Grid grid, Mark mark) {
+    public GameEndCondition result(Grid grid, Mark mark) {
         return new GameEndConditionNone();
     }
 
