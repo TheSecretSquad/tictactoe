@@ -43,4 +43,21 @@ public class Grid {
     public GameEndCondition condition(GameEndEvaluation evaluation, Mark mark) {
         return evaluation.condition(this, mark);
     }
+
+    public <D extends Dimension> D dimensionFilledByMarkOrDefault(Dimensions<D> dimensions, Mark mark, D defaultDimension) {
+        for(D dimension : dimensions) {
+            if(dimension.isFilledWithMarkOnGrid(mark, this)) {
+                return dimension;
+            }
+        }
+        return defaultDimension;
+    }
+
+    interface Dimension {
+        boolean isFilledWithMarkOnGrid(Mark mark, Grid grid);
+    }
+
+    interface Dimensions<T extends Dimension> extends Iterable<T> {
+
+    }
 }
