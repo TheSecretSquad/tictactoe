@@ -2,7 +2,6 @@ package com.disalvo.peter;
 
 import java.util.HashMap;
 import java.util.Map;
-import static com.disalvo.peter.TicTacToeState.PlayState.GameEndCondition;
 
 public class Grid {
     private final int size;
@@ -44,12 +43,20 @@ public class Grid {
         return evaluation.result(this, mark);
     }
 
-    public boolean isDimensionFilledWithMark(Dimension dimension, Mark mark) {
-        return dimension.isFilledWithMarkOnGrid(mark, this);
+    public <D extends Dimension> D firstDimensionFilledWithMarkOrDefault(Dimensions<D> dimensions, Mark mark, D defaultDimension) {
+        for(D dimension : dimensions) {
+            if(dimension.isFilledWithMarkOnGrid(mark, this))
+                return dimension;
+        }
+        return defaultDimension;
     }
 
     interface Dimension {
         boolean isFilledWithMarkOnGrid(Mark mark, Grid grid);
+    }
+
+    interface Dimensions<D extends Dimension> extends Iterable<D> {
+
     }
 
     interface GridEvaluation<T> {

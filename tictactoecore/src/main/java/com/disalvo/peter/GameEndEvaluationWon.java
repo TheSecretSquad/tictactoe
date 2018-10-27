@@ -1,12 +1,14 @@
 package com.disalvo.peter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.disalvo.peter.Grid.Dimension;
 import static com.disalvo.peter.TicTacToeState.PlayState.GameEndCondition;
 
-class GameEndEvaluationWon extends GameEndEvaluationChain {
+class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimensions {
     private static Dimension LeftColumnDimension() {
         return new ColumnDimension(1);
     }
@@ -57,12 +59,13 @@ class GameEndEvaluationWon extends GameEndEvaluationChain {
 
     @Override
     protected GameEndCondition condition(Grid grid, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
-        for (Dimension dimension : AllDimensions) {
-            if (grid.isDimensionFilledWithMark(dimension, mark)) {
-                return new GameEndConditionWon(dimension);
-            }
-        }
-        return evaluateIfNotPresent.condition();
+        WinningDimension dimension = grid.firstDimensionFilledWithMarkOrDefault(this, mark, new EmptyDimension());
+        return dimension.condition(evaluateIfNotPresent);
+    }
+
+    @Override
+    public Iterator<Dimension> iterator() {
+        return AllDimensions.iterator();
     }
 
     public static abstract class WinningDimension implements Dimension {
@@ -72,6 +75,10 @@ class GameEndEvaluationWon extends GameEndEvaluationChain {
             this(Arrays.asList(position1, position2, position3));
         }
 
+        protected WinningDimension() {
+            this(new ArrayList<>());
+        }
+
         private WinningDimension(List<Position> positions) {
             this.positions = positions;
         }
@@ -79,6 +86,10 @@ class GameEndEvaluationWon extends GameEndEvaluationChain {
         @Override
         public boolean isFilledWithMarkOnGrid(Mark mark, Grid grid) {
             return positions.stream().allMatch(position -> grid.isPositionOccupiedByMark(position, mark));
+        }
+
+        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
+            return new GameEndConditionWon(this);
         }
     }
 
@@ -120,6 +131,13 @@ class GameEndEvaluationWon extends GameEndEvaluationChain {
         @Override
         public TicTacToeState nextState(TicTacToeState ticTacToeState) {
             return ticTacToeState.won();
+        }
+    }
+
+    private class EmptyDimension extends WinningDimension {
+        @Override
+        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
+            return evaluateIfNotPresent.condition();
         }
     }
 }
