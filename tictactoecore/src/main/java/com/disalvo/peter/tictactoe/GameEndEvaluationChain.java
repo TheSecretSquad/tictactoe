@@ -1,4 +1,5 @@
 package com.disalvo.peter.tictactoe;
+import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
 
 abstract class GameEndEvaluationChain implements GameEndEvaluation {
 
@@ -8,15 +9,15 @@ abstract class GameEndEvaluationChain implements GameEndEvaluation {
         this.evaluateIfNotPresent = evaluateIfNotPresent;
     }
 
-    protected abstract TicTacToeState.PlayState.GameEndCondition condition(Grid grid, Mark mark, NotPresentEvaluation evaluateIfNotPresent);
+    protected abstract GameEndCondition condition(Grid grid, Mark mark, NotPresentEvaluation evaluateIfNotPresent);
 
     @Override
-    public TicTacToeState.PlayState.GameEndCondition result(Grid grid, Mark mark) {
+    public GameEndCondition result(Grid grid, Mark mark) {
         return condition(grid, mark, () -> evaluateIfNotPresent.result(grid, mark));
     }
 
     @FunctionalInterface
     interface NotPresentEvaluation {
-        TicTacToeState.PlayState.GameEndCondition condition();
+        GameEndCondition condition();
     }
 }

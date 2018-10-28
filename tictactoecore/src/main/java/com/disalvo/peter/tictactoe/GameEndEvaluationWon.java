@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
+
 class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimensions {
     private static Grid.Dimension LeftColumnDimension() { return new ColumnDimension(1); }
     private static Grid.Dimension CenterColumnDimension() { return new ColumnDimension(2); }
@@ -32,7 +34,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimens
     }
 
     @Override
-    protected TicTacToeState.PlayState.GameEndCondition condition(Grid grid, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
+    protected GameEndCondition condition(Grid grid, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
         WinningDimension dimension = grid.firstDimensionFilledWithMarkOrDefault(this, mark, new EmptyDimension());
         return dimension.condition(evaluateIfNotPresent);
     }
@@ -94,7 +96,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimens
         }
     }
 
-    private static class GameEndConditionWon implements TicTacToeState.PlayState.GameEndCondition {
+    private static class GameEndConditionWon implements GameEndCondition {
 
         private final Grid.Dimension dimension;
 
@@ -110,7 +112,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimens
 
     private class EmptyDimension extends WinningDimension {
         @Override
-        public TicTacToeState.PlayState.GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
+        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
             return evaluateIfNotPresent.condition();
         }
     }
