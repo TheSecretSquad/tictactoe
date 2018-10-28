@@ -6,27 +6,24 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
+import static com.disalvo.peter.tictactoe.Grid.Dimension;
+import static com.disalvo.peter.tictactoe.Grid.Dimensions;
 
-class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimensions {
-    private static Grid.Dimension LeftColumnDimension() { return new ColumnDimension(1); }
-    private static Grid.Dimension CenterColumnDimension() { return new ColumnDimension(2); }
-    private static Grid.Dimension RightColumnDimension() { return new ColumnDimension(3); }
-    private static Grid.Dimension TopRowDimension() { return new RowDimension(1); }
-    private static Grid.Dimension MiddleRowDimension() { return new RowDimension(2); }
-    private static Grid.Dimension BottomRowDimension() { return new RowDimension(3); }
-    private static Grid.Dimension TopLeftToBottomRightDiagonalDimension() { return new TopLeftToBottomRightDiagonalDimension(); }
-    private static Grid.Dimension TopRightToBottomLeftDiagonalDimension() { return new TopRightToBottomLeftDiagonalDimension(); }
+class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions {
+    private static Dimension LeftColumn() { return new DimensionColumn(1); }
+    private static Dimension CenterColumn() { return new DimensionColumn(2); }
+    private static Dimension RightColumn() { return new DimensionColumn(3); }
+    private static Dimension TopRow() { return new DimensionRow(1); }
+    private static Dimension MiddleRow() { return new DimensionRow(2); }
+    private static Dimension BottomRow() { return new DimensionRow(3); }
+    private static Dimension TopLeftToBottomRightDiagonal() { return new DimensionTopLeftToBottomRightDiagonal(); }
+    private static Dimension TopRightToBottomLeftDiagonal() { return new DimensionTopRightToBottomLeftDiagonal(); }
 
     private static final List<Grid.Dimension> AllDimensions =
             Arrays.asList(
-                    LeftColumnDimension(),
-                    CenterColumnDimension(),
-                    RightColumnDimension(),
-                    TopRowDimension(),
-                    MiddleRowDimension(),
-                    BottomRowDimension(),
-                    TopLeftToBottomRightDiagonalDimension(),
-                    TopRightToBottomLeftDiagonalDimension()
+                    LeftColumn(), CenterColumn(), RightColumn(),
+                    TopRow(), MiddleRow(), BottomRow(),
+                    TopLeftToBottomRightDiagonal(), TopRightToBottomLeftDiagonal()
             );
 
     public GameEndEvaluationWon(GameEndEvaluation evaluateIfNotPresent) {
@@ -35,7 +32,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimens
 
     @Override
     protected GameEndCondition condition(Grid grid, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
-        WinningDimension dimension = grid.firstDimensionFilledWithMarkOrDefault(this, mark, new EmptyDimension());
+        DimensionWinning dimension = grid.firstDimensionFilledWithMarkOrDefault(this, mark, new DimensionWinningNotFound());
         return dimension.condition(evaluateIfNotPresent);
     }
 
@@ -44,18 +41,18 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimens
         return AllDimensions.iterator();
     }
 
-    public static abstract class WinningDimension implements Grid.Dimension {
+    public static abstract class DimensionWinning implements Dimension {
         private final List<Position> positions;
 
-        public WinningDimension(Position position1, Position position2, Position position3) {
+        public DimensionWinning(Position position1, Position position2, Position position3) {
             this(Arrays.asList(position1, position2, position3));
         }
 
-        protected WinningDimension() {
+        protected DimensionWinning() {
             this(new ArrayList<>());
         }
 
-        private WinningDimension(List<Position> positions) {
+        private DimensionWinning(List<Position> positions) {
             this.positions = positions;
         }
 
@@ -69,29 +66,29 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimens
         }
     }
 
-    private static class ColumnDimension extends WinningDimension {
+    private static class DimensionColumn extends DimensionWinning {
 
-        public ColumnDimension(int column) {
+        public DimensionColumn(int column) {
             super(new Position(1, column), new Position(2, column), new Position(3, column));
         }
     }
 
-    private static class RowDimension extends WinningDimension {
-        public RowDimension(int row) {
+    private static class DimensionRow extends DimensionWinning {
+        public DimensionRow(int row) {
             super(new Position(row, 1), new Position(row, 2), new Position(row, 3));
         }
     }
 
-    private static class TopLeftToBottomRightDiagonalDimension extends WinningDimension {
+    private static class DimensionTopLeftToBottomRightDiagonal extends DimensionWinning {
 
-        public TopLeftToBottomRightDiagonalDimension() {
+        public DimensionTopLeftToBottomRightDiagonal() {
             super(new Position(1, 1), new Position(2, 2), new Position(3, 3));
         }
     }
 
-    private static class TopRightToBottomLeftDiagonalDimension extends WinningDimension {
+    private static class DimensionTopRightToBottomLeftDiagonal extends DimensionWinning {
 
-        public TopRightToBottomLeftDiagonalDimension() {
+        public DimensionTopRightToBottomLeftDiagonal() {
             super(new Position(1, 3), new Position(2, 2), new Position(3, 1));
         }
     }
@@ -110,7 +107,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimens
         }
     }
 
-    private class EmptyDimension extends WinningDimension {
+    private class DimensionWinningNotFound extends DimensionWinning {
         @Override
         public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
             return evaluateIfNotPresent.condition();
