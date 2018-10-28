@@ -1,8 +1,8 @@
-package com.disalvo.peter;
+package com.disalvo.peter.tictactoe;
 
-import static com.disalvo.peter.TicTacToeStateStopped.TicTacToeStateWon;
-import static com.disalvo.peter.TicTacToeStateStopped.TicTacToeStateStalemate;
-import static com.disalvo.peter.TicTacToeStateStopped.TicTacToeStateManualStop;
+import static com.disalvo.peter.tictactoe.TicTacToeStateStopped.TicTacToeStateWon;
+import static com.disalvo.peter.tictactoe.TicTacToeStateStopped.TicTacToeStateStalemate;
+import static com.disalvo.peter.tictactoe.TicTacToeStateStopped.TicTacToeStateManualStop;
 
 class TicTacToeStateStarted implements TicTacToeState {
 

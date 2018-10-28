@@ -1,12 +1,11 @@
-package com.disalvo.peter;
+package com.disalvo.peter.tictactoe;
 
-import static com.disalvo.peter.TicTacToeState.PlayState.GameEndCondition;
-import static com.disalvo.peter.GameEndEvaluationNone.GameEndConditionNone;
+import static com.disalvo.peter.tictactoe.GameEndEvaluationNone.GameEndConditionNone;
 
-class Board implements GameEndCondition {
+class Board implements TicTacToeState.PlayState.GameEndCondition {
     private static final int DEFAULT_SIZE = 9;
     private final Grid grid;
-    private final GameEndCondition condition;
+    private final TicTacToeState.PlayState.GameEndCondition condition;
     private final GameEndEvaluation evaluation;
 
     public Board() {
@@ -21,7 +20,7 @@ class Board implements GameEndCondition {
         );
     }
 
-    private Board(Grid grid, GameEndCondition condition, GameEndEvaluation evaluation) {
+    private Board(Grid grid, TicTacToeState.PlayState.GameEndCondition condition, GameEndEvaluation evaluation) {
         this.grid = grid;
         this.condition = condition;
         this.evaluation = evaluation;

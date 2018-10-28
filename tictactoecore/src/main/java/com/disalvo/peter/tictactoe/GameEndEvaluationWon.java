@@ -1,47 +1,21 @@
-package com.disalvo.peter;
+package com.disalvo.peter.tictactoe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.disalvo.peter.Grid.Dimension;
-import static com.disalvo.peter.TicTacToeState.PlayState.GameEndCondition;
-
 class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimensions {
-    private static Dimension LeftColumnDimension() {
-        return new ColumnDimension(1);
-    }
+    private static Grid.Dimension LeftColumnDimension() { return new ColumnDimension(1); }
+    private static Grid.Dimension CenterColumnDimension() { return new ColumnDimension(2); }
+    private static Grid.Dimension RightColumnDimension() { return new ColumnDimension(3); }
+    private static Grid.Dimension TopRowDimension() { return new RowDimension(1); }
+    private static Grid.Dimension MiddleRowDimension() { return new RowDimension(2); }
+    private static Grid.Dimension BottomRowDimension() { return new RowDimension(3); }
+    private static Grid.Dimension TopLeftToBottomRightDiagonalDimension() { return new TopLeftToBottomRightDiagonalDimension(); }
+    private static Grid.Dimension TopRightToBottomLeftDiagonalDimension() { return new TopRightToBottomLeftDiagonalDimension(); }
 
-    private static Dimension CenterColumnDimension() {
-        return new ColumnDimension(2);
-    }
-
-    private static Dimension RightColumnDimension() {
-        return new ColumnDimension(3);
-    }
-
-    private static Dimension TopRowDimension() {
-        return new RowDimension(1);
-    }
-
-    private static Dimension MiddleRowDimension() {
-        return new RowDimension(2);
-    }
-
-    private static Dimension BottomRowDimension() {
-        return new RowDimension(3);
-    }
-
-    private static Dimension TopLeftToBottomRightDiagonalDimension() {
-        return new TopLeftToBottomRightDiagonalDimension();
-    }
-
-    private static Dimension TopRightToBottomLeftDiagonalDimension() {
-        return new TopRightToBottomLeftDiagonalDimension();
-    }
-
-    private static final List<Dimension> AllDimensions =
+    private static final List<Grid.Dimension> AllDimensions =
             Arrays.asList(
                     LeftColumnDimension(),
                     CenterColumnDimension(),
@@ -58,17 +32,17 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimens
     }
 
     @Override
-    protected GameEndCondition condition(Grid grid, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
+    protected TicTacToeState.PlayState.GameEndCondition condition(Grid grid, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
         WinningDimension dimension = grid.firstDimensionFilledWithMarkOrDefault(this, mark, new EmptyDimension());
         return dimension.condition(evaluateIfNotPresent);
     }
 
     @Override
-    public Iterator<Dimension> iterator() {
+    public Iterator<Grid.Dimension> iterator() {
         return AllDimensions.iterator();
     }
 
-    public static abstract class WinningDimension implements Dimension {
+    public static abstract class WinningDimension implements Grid.Dimension {
         private final List<Position> positions;
 
         public WinningDimension(Position position1, Position position2, Position position3) {
@@ -88,7 +62,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimens
             return positions.stream().allMatch(position -> grid.isPositionOccupiedByMark(position, mark));
         }
 
-        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
+        public TicTacToeState.PlayState.GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
             return new GameEndConditionWon(this);
         }
     }
@@ -120,11 +94,11 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimens
         }
     }
 
-    private static class GameEndConditionWon implements GameEndCondition {
+    private static class GameEndConditionWon implements TicTacToeState.PlayState.GameEndCondition {
 
-        private final Dimension dimension;
+        private final Grid.Dimension dimension;
 
-        public GameEndConditionWon(Dimension dimension) {
+        public GameEndConditionWon(Grid.Dimension dimension) {
             this.dimension = dimension;
         }
 
@@ -136,7 +110,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Grid.Dimens
 
     private class EmptyDimension extends WinningDimension {
         @Override
-        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
+        public TicTacToeState.PlayState.GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
             return evaluateIfNotPresent.condition();
         }
     }

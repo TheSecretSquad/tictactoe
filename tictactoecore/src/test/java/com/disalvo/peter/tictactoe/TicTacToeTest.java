@@ -1,4 +1,4 @@
-package com.disalvo.peter;
+package com.disalvo.peter.tictactoe;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;

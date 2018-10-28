@@ -1,7 +1,7 @@
-package com.disalvo.peter;
+package com.disalvo.peter.tictactoe;
 
-import static com.disalvo.peter.TicTacToeState.StateAnnouncer;
-import static com.disalvo.peter.TicTacToeState.PlayState;
+import static com.disalvo.peter.tictactoe.TicTacToeState.StateAnnouncer;
+import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState;
 
 public class TicTacToe implements Game, StateAnnouncer {
     private static final Mark X = new Mark("x");

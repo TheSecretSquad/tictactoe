@@ -1,4 +1,4 @@
-package com.disalvo.peter;
+package com.disalvo.peter.tictactoe;
 
 class GameExceptionNotStarted extends RuntimeException {
     public GameExceptionNotStarted() {

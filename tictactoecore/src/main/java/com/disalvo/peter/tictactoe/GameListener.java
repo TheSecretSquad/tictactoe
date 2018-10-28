@@ -1,4 +1,4 @@
-package com.disalvo.peter;
+package com.disalvo.peter.tictactoe;
 
 public interface GameListener {
     GameListener started(Game game);
