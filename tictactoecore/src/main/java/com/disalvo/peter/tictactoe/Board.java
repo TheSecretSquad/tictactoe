@@ -3,7 +3,7 @@ package com.disalvo.peter.tictactoe;
 import static com.disalvo.peter.tictactoe.GameEndEvaluationNone.GameEndConditionNone;
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
 
-class Board implements TicTacToeState.PlayState.GameEndCondition {
+class Board implements GameEndCondition {
     private static final int DEFAULT_SIZE = 9;
     private final Grid grid;
     private final GameEndCondition condition;
@@ -27,10 +27,6 @@ class Board implements TicTacToeState.PlayState.GameEndCondition {
         this.evaluation = evaluation;
     }
 
-    public boolean isEmptyPosition(Position position) {
-        return grid.isEmptyPosition(position);
-    }
-
     public Board withMarkAtPosition(Mark mark, Position position) {
         Grid nextGrid = grid.withMarkAtPosition(mark, position);
         return new Board(nextGrid, nextGrid.evaluationResult(evaluation, mark), evaluation);
@@ -39,5 +35,9 @@ class Board implements TicTacToeState.PlayState.GameEndCondition {
     @Override
     public TicTacToeState nextState(TicTacToeState ticTacToeState) {
         return condition.nextState(ticTacToeState);
+    }
+
+    public Play validatedPlay(Play play, Position position) {
+        return grid.isEmptyPosition(position) ? play.validPosition() : play;
     }
 }

@@ -20,4 +20,8 @@ class Turn {
     public boolean canPlay(Mark mark) {
         return this.current.equals(mark);
     }
+
+    public Play validatedPlay(Play play, Mark mark) {
+        return current.validatedPlay(play, mark);
+    }
 }

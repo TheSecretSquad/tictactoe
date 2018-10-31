@@ -2,6 +2,7 @@ package com.disalvo.peter.tictactoe;
 
 import static com.disalvo.peter.tictactoe.TicTacToeState.StateAnnouncer;
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState;
+import static com.disalvo.peter.tictactoe.Play.UnvalidatedPlay;
 
 public class TicTacToe implements Game, StateAnnouncer {
     private static final Mark X = new Mark("x");
@@ -47,20 +48,12 @@ public class TicTacToe implements Game, StateAnnouncer {
 
     @Override
     public TicTacToe playMarkAtPosition(Mark mark, Position position) {
-        // TODO: Implement Play object for validation and application
-        // TODO: Create separate package for Board
-        PlayState playState = state.play();
+        return new UnvalidatedPlay(mark, position, state.play())
+                .validated(board, turn)
+                .apply(this, listener);
+    }
 
-        if(!turn.canPlay(mark)) {
-            listener.invalidMark(this, mark);
-            return this;
-        }
-
-        if(!board.isEmptyPosition(position)) {
-            listener.invalidPosition(this, position, mark);
-            return this;
-        }
-
+    public TicTacToe applyPlay(Mark mark, Position position, PlayState playState) {
         board = board.withMarkAtPosition(mark, position);
         state = playState.nextState(board);
         turn = turn.next(state);

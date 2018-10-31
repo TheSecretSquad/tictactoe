@@ -61,7 +61,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
             return positions.stream().allMatch(position -> grid.isPositionOccupiedByMark(position, mark));
         }
 
-        public TicTacToeState.PlayState.GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
+        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
             return new GameEndConditionWon(this);
         }
     }

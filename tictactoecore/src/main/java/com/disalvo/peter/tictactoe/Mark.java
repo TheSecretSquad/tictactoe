@@ -28,4 +28,8 @@ public class Mark {
                 "symbol='" + symbol + '\'' +
                 '}';
     }
+
+    public Play validatedPlay(Play play, Mark mark) {
+        return this.equals(mark) ? play.validMark() : play;
+    }
 }
