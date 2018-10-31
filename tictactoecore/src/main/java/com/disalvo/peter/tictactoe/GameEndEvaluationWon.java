@@ -19,7 +19,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
     private static Dimension TopLeftToBottomRightDiagonal() { return new DimensionTopLeftToBottomRightDiagonal(); }
     private static Dimension TopRightToBottomLeftDiagonal() { return new DimensionTopRightToBottomLeftDiagonal(); }
 
-    private static final List<Grid.Dimension> AllDimensions =
+    private static final List<Dimension> AllDimensions =
             Arrays.asList(
                     LeftColumn(), CenterColumn(), RightColumn(),
                     TopRow(), MiddleRow(), BottomRow(),
@@ -37,7 +37,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
     }
 
     @Override
-    public Iterator<Grid.Dimension> iterator() {
+    public Iterator<Dimension> iterator() {
         return AllDimensions.iterator();
     }
 
@@ -95,9 +95,9 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
 
     private static class GameEndConditionWon implements GameEndCondition {
 
-        private final Grid.Dimension dimension;
+        private final Dimension dimension;
 
-        public GameEndConditionWon(Grid.Dimension dimension) {
+        public GameEndConditionWon(Dimension dimension) {
             this.dimension = dimension;
         }
 
