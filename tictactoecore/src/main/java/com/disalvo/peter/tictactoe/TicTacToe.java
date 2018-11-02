@@ -89,6 +89,11 @@ public class TicTacToe implements Game, StateAnnouncer {
     }
 
     @Override
+    public Game printOn(GameMedia gameMedia) {
+        return null;
+    }
+
+    @Override
     public StateAnnouncer continuePlay(Mark mark, Position position) {
         listener.continuePlay(this, mark, position);
         return this;
