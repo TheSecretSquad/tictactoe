@@ -9,4 +9,10 @@ public interface Game {
     Game stop();
 
     Game playMarkAtPosition(Mark mark, Position position);
+
+    Game printOn(GameMedia gameMedia);
+
+    interface GameMedia {
+
+    }
 }
