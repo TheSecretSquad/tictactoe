@@ -1,11 +1,12 @@
 package com.disalvo.peter.tictactoe;
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.BoardCondition;
+import static com.disalvo.peter.tictactoe.Board.BoardEvaluation;
 
-abstract class GameEndEvaluationChain implements GameEndEvaluation {
+abstract class BoardEvaluationChain implements BoardEvaluation {
 
-    private final GameEndEvaluation evaluateIfNotPresent;
+    private final BoardEvaluation evaluateIfNotPresent;
 
-    public GameEndEvaluationChain(GameEndEvaluation evaluateIfNotPresent) {
+    public BoardEvaluationChain(BoardEvaluation evaluateIfNotPresent) {
         this.evaluateIfNotPresent = evaluateIfNotPresent;
     }
 

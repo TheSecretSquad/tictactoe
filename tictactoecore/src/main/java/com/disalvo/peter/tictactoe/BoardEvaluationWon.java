@@ -8,8 +8,9 @@ import java.util.List;
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.BoardCondition;
 import static com.disalvo.peter.tictactoe.Board.Dimension;
 import static com.disalvo.peter.tictactoe.Board.Dimensions;
+import static com.disalvo.peter.tictactoe.Board.BoardEvaluation;
 
-class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions {
+class BoardEvaluationWon extends BoardEvaluationChain implements Dimensions {
     private static Dimension LeftColumn() { return new DimensionColumn(1); }
     private static Dimension CenterColumn() { return new DimensionColumn(2); }
     private static Dimension RightColumn() { return new DimensionColumn(3); }
@@ -26,7 +27,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
                     TopLeftToBottomRightDiagonal(), TopRightToBottomLeftDiagonal()
             );
 
-    public GameEndEvaluationWon(GameEndEvaluation evaluateIfNotPresent) {
+    public BoardEvaluationWon(BoardEvaluation evaluateIfNotPresent) {
         super(evaluateIfNotPresent);
     }
 

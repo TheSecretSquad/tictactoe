@@ -1,9 +1,10 @@
 package com.disalvo.peter.tictactoe;
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.BoardCondition;
+import static com.disalvo.peter.tictactoe.Board.BoardEvaluation;
 
-class GameEndEvaluationStalemate extends GameEndEvaluationChain {
+class BoardEvaluationStalemate extends BoardEvaluationChain {
 
-    public GameEndEvaluationStalemate(GameEndEvaluation evaluateIfNotPresent) {
+    public BoardEvaluationStalemate(BoardEvaluation evaluateIfNotPresent) {
         super(evaluateIfNotPresent);
     }
 

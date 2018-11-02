@@ -1,7 +1,8 @@
 package com.disalvo.peter.tictactoe;
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.BoardCondition;
+import static com.disalvo.peter.tictactoe.Board.BoardEvaluation;
 
-public class GameEndEvaluationNone implements GameEndEvaluation {
+public class BoardEvaluationNone implements BoardEvaluation{
     @Override
     public BoardCondition result(Board board, Mark mark) {
         return new BoardConditionNone();

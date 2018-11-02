@@ -4,14 +4,15 @@ import static com.disalvo.peter.tictactoe.TicTacToeState.StateAnnouncer;
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState;
 import static com.disalvo.peter.tictactoe.Play.UnvalidatedPlay;
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.BoardCondition;
-import static com.disalvo.peter.tictactoe.GameEndEvaluationNone.BoardConditionNone;
+import static com.disalvo.peter.tictactoe.BoardEvaluationNone.BoardConditionNone;
+import static com.disalvo.peter.tictactoe.Board.BoardEvaluation;
 
 public class TicTacToe implements Game, StateAnnouncer {
     private static final Mark X = new Mark("x");
     private static final Mark O = new Mark("o");
 
     private final GameListener listener;
-    private final GameEndEvaluation endEvaluation;
+    private final BoardEvaluation endEvaluation;
     private TicTacToeState state;
     private Board board;
     private Turn turn;
@@ -23,7 +24,7 @@ public class TicTacToe implements Game, StateAnnouncer {
                 new TicTacToeStateInitial(),
                 new Board(),
                 new Turn(X, O),
-                new GameEndEvaluationWon(new GameEndEvaluationStalemate(new GameEndEvaluationNone())),
+                new BoardEvaluationWon(new BoardEvaluationStalemate(new BoardEvaluationNone())),
                 new BoardConditionNone()
         );
     }
@@ -32,7 +33,7 @@ public class TicTacToe implements Game, StateAnnouncer {
                       TicTacToeState state,
                       Board board,
                       Turn turn,
-                      GameEndEvaluation endEvaluation,
+                      BoardEvaluation endEvaluation,
                       BoardCondition endCondition) {
         this.listener = listener;
         this.state = state;

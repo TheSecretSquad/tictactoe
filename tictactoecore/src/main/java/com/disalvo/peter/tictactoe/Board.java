@@ -2,6 +2,7 @@ package com.disalvo.peter.tictactoe;
 
 import java.util.HashMap;
 import java.util.Map;
+import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.BoardCondition;
 
 public class Board {
     private static final int DEFAULT_SIZE = 9;
@@ -40,7 +41,7 @@ public class Board {
         return mark.equals(markAtPosition(position));
     }
 
-    public <T> T evaluationResult(BoardEvaluation<T> evaluation, Mark mark) {
+    public BoardCondition evaluationResult(BoardEvaluation evaluation, Mark mark) {
         return evaluation.result(this, mark);
     }
 
@@ -68,8 +69,8 @@ public class Board {
 
     }
 
-    interface BoardEvaluation<T> {
+    interface BoardEvaluation {
 
-        T result(Board board, Mark mark);
+        BoardCondition result(Board board, Mark mark);
     }
 }
