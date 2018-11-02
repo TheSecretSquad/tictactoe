@@ -2,21 +2,19 @@ package com.disalvo.peter.tictactoe;
 
 import static com.disalvo.peter.tictactoe.TicTacToeState.StateAnnouncer;
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState;
-import static com.disalvo.peter.tictactoe.Play.UnvalidatedPlay;
-import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.BoardCondition;
-import static com.disalvo.peter.tictactoe.BoardEvaluationNone.BoardConditionNone;
-import static com.disalvo.peter.tictactoe.Board.BoardEvaluation;
+import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
+import static com.disalvo.peter.tictactoe.GameEndEvaluationNone.BoardConditionNone;
 
 public class TicTacToe implements Game, StateAnnouncer {
     private static final Mark X = new Mark("x");
     private static final Mark O = new Mark("o");
 
     private final GameListener listener;
-    private final BoardEvaluation endEvaluation;
+    private final GameEndEvaluation endEvaluation;
     private TicTacToeState state;
     private Board board;
     private Turn turn;
-    private BoardCondition endCondition;
+    private GameEndCondition endCondition;
 
     public TicTacToe(GameListener listener) {
         this(
@@ -24,7 +22,7 @@ public class TicTacToe implements Game, StateAnnouncer {
                 new TicTacToeStateInitial(),
                 new Board(),
                 new Turn(X, O),
-                new BoardEvaluationWon(new BoardEvaluationStalemate(new BoardEvaluationNone())),
+                new GameEndEvaluationWon(new GameEndEvaluationStalemate(new GameEndEvaluationNone())),
                 new BoardConditionNone()
         );
     }
@@ -33,8 +31,8 @@ public class TicTacToe implements Game, StateAnnouncer {
                       TicTacToeState state,
                       Board board,
                       Turn turn,
-                      BoardEvaluation endEvaluation,
-                      BoardCondition endCondition) {
+                      GameEndEvaluation endEvaluation,
+                      GameEndCondition endCondition) {
         this.listener = listener;
         this.state = state;
         this.board = board;
@@ -59,18 +57,25 @@ public class TicTacToe implements Game, StateAnnouncer {
 
     @Override
     public TicTacToe playMarkAtPosition(Mark mark, Position position) {
-        return new UnvalidatedPlay(mark, position, state.play())
-                .validated(board, turn)
-                .apply(this, listener);
-    }
+        PlayState playState = state.play();
 
-    public TicTacToe applyPlay(Mark mark, Position position, PlayState playState) {
+        if(!turn.canPlay(mark)) {
+            listener.invalidMark(this, mark);
+            return this;
+        }
+
+        if(!board.isEmptyPosition(position)) {
+            listener.invalidPosition(this, position, mark);
+            return this;
+        }
+
         board = board.withMarkAtPosition(mark, position);
         endCondition = board.evaluationResult(endEvaluation, mark);
         state = playState.nextState(endCondition);
         turn = turn.next(state);
         state.announceTo(this, mark, position);
         return this;
+
     }
 
     @Override

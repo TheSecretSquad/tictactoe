@@ -5,12 +5,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.BoardCondition;
+import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
 import static com.disalvo.peter.tictactoe.Board.Dimension;
 import static com.disalvo.peter.tictactoe.Board.Dimensions;
-import static com.disalvo.peter.tictactoe.Board.BoardEvaluation;
 
-class BoardEvaluationWon extends BoardEvaluationChain implements Dimensions {
+class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions {
     private static Dimension LeftColumn() { return new DimensionColumn(1); }
     private static Dimension CenterColumn() { return new DimensionColumn(2); }
     private static Dimension RightColumn() { return new DimensionColumn(3); }
@@ -27,12 +26,12 @@ class BoardEvaluationWon extends BoardEvaluationChain implements Dimensions {
                     TopLeftToBottomRightDiagonal(), TopRightToBottomLeftDiagonal()
             );
 
-    public BoardEvaluationWon(BoardEvaluation evaluateIfNotPresent) {
+    public GameEndEvaluationWon(GameEndEvaluation evaluateIfNotPresent) {
         super(evaluateIfNotPresent);
     }
 
     @Override
-    protected BoardCondition condition(Board board, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
+    protected GameEndCondition condition(Board board, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
         DimensionWinning dimension = board.firstDimensionFilledWithMarkOrDefault(this, mark, new DimensionWinningNotFound());
         return dimension.condition(evaluateIfNotPresent);
     }
@@ -62,7 +61,7 @@ class BoardEvaluationWon extends BoardEvaluationChain implements Dimensions {
             return positions.stream().allMatch(position -> board.isPositionOccupiedByMark(position, mark));
         }
 
-        public BoardCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
+        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
             return new BoardConditionWon(this);
         }
     }
@@ -94,7 +93,7 @@ class BoardEvaluationWon extends BoardEvaluationChain implements Dimensions {
         }
     }
 
-    private static class BoardConditionWon implements BoardCondition {
+    private static class BoardConditionWon implements GameEndCondition {
 
         private final Dimension dimension;
 
@@ -110,7 +109,7 @@ class BoardEvaluationWon extends BoardEvaluationChain implements Dimensions {
 
     private class DimensionWinningNotFound extends DimensionWinning {
         @Override
-        public BoardCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
+        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
             return evaluateIfNotPresent.condition();
         }
     }
