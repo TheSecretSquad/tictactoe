@@ -1,25 +1,21 @@
 package com.disalvo.peter.tictactoe;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
-import static com.disalvo.peter.tictactoe.Board.Dimension;
-import static com.disalvo.peter.tictactoe.Board.Dimensions;
 
-class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions {
-    private static Dimension LeftColumn() { return new DimensionColumn(1); }
-    private static Dimension CenterColumn() { return new DimensionColumn(2); }
-    private static Dimension RightColumn() { return new DimensionColumn(3); }
-    private static Dimension TopRow() { return new DimensionRow(1); }
-    private static Dimension MiddleRow() { return new DimensionRow(2); }
-    private static Dimension BottomRow() { return new DimensionRow(3); }
-    private static Dimension TopLeftToBottomRightDiagonal() { return new DimensionTopLeftToBottomRightDiagonal(); }
-    private static Dimension TopRightToBottomLeftDiagonal() { return new DimensionTopRightToBottomLeftDiagonal(); }
+class GameEndEvaluationWon extends GameEndEvaluationChain {
+    private static DimensionEvaluation LeftColumn() { return new DimensionEvaluationColumn(1); }
+    private static DimensionEvaluation CenterColumn() { return new DimensionEvaluationColumn(2); }
+    private static DimensionEvaluation RightColumn() { return new DimensionEvaluationColumn(3); }
+    private static DimensionEvaluation TopRow() { return new DimensionEvaluationRow(1); }
+    private static DimensionEvaluation MiddleRow() { return new DimensionEvaluationRow(2); }
+    private static DimensionEvaluation BottomRow() { return new DimensionEvaluationRow(3); }
+    private static DimensionEvaluation TopLeftToBottomRightDiagonal() { return new DimensionEvaluationTopLeftToBottomRightDiagonal(); }
+    private static DimensionEvaluation TopRightToBottomLeftDiagonal() { return new DimensionEvaluationTopRightToBottomLeftDiagonal(); }
 
-    private static final List<Dimension> AllDimensions =
+    private static final List<DimensionEvaluation> AllDimensions =
             Arrays.asList(
                     LeftColumn(), CenterColumn(), RightColumn(),
                     TopRow(), MiddleRow(), BottomRow(),
@@ -31,86 +27,70 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
     }
 
     @Override
-    protected GameEndCondition condition(Board board, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
-        DimensionWinning dimension = board.firstDimensionFilledWithMarkOrDefault(this, mark, new DimensionWinningNotFound());
-        return dimension.condition(evaluateIfNotPresent);
+    protected GameEndCondition result(Board board, Mark mark, NotPresentEvaluation notPresentEvaluation) {
+        for(DimensionEvaluation dimensionEvaluation : AllDimensions) {
+            if(board.evaluationResult(dimensionEvaluation, mark)) {
+                return new BoardConditionWon(dimensionEvaluation);
+            }
+        }
+        return notPresentEvaluation.result();
     }
 
-    @Override
-    public Iterator<Dimension> iterator() {
-        return AllDimensions.iterator();
-    }
-
-    public static abstract class DimensionWinning implements Dimension {
+    public static class DimensionEvaluation implements Board.BoardEvaluation<Boolean> {
         private final List<Position> positions;
 
-        public DimensionWinning(Position position1, Position position2, Position position3) {
+        public DimensionEvaluation(Position position1, Position position2, Position position3) {
             this(Arrays.asList(position1, position2, position3));
         }
 
-        protected DimensionWinning() {
-            this(new ArrayList<>());
-        }
-
-        private DimensionWinning(List<Position> positions) {
+        private DimensionEvaluation(List<Position> positions) {
             this.positions = positions;
         }
 
         @Override
-        public boolean isFilledWithMarkOnGrid(Mark mark, Board board) {
+        public Boolean result(Board board, Mark mark) {
             return positions.stream().allMatch(position -> board.isPositionOccupiedByMark(position, mark));
-        }
-
-        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
-            return new BoardConditionWon(this);
         }
     }
 
-    private static class DimensionColumn extends DimensionWinning {
+    private static class DimensionEvaluationColumn extends DimensionEvaluation {
 
-        public DimensionColumn(int column) {
+        public DimensionEvaluationColumn(int column) {
             super(new Position(1, column), new Position(2, column), new Position(3, column));
         }
     }
 
-    private static class DimensionRow extends DimensionWinning {
-        public DimensionRow(int row) {
+    private static class DimensionEvaluationRow extends DimensionEvaluation {
+        public DimensionEvaluationRow(int row) {
             super(new Position(row, 1), new Position(row, 2), new Position(row, 3));
         }
     }
 
-    private static class DimensionTopLeftToBottomRightDiagonal extends DimensionWinning {
+    private static class DimensionEvaluationTopLeftToBottomRightDiagonal extends DimensionEvaluation {
 
-        public DimensionTopLeftToBottomRightDiagonal() {
+        public DimensionEvaluationTopLeftToBottomRightDiagonal() {
             super(new Position(1, 1), new Position(2, 2), new Position(3, 3));
         }
     }
 
-    private static class DimensionTopRightToBottomLeftDiagonal extends DimensionWinning {
+    private static class DimensionEvaluationTopRightToBottomLeftDiagonal extends DimensionEvaluation {
 
-        public DimensionTopRightToBottomLeftDiagonal() {
+        public DimensionEvaluationTopRightToBottomLeftDiagonal() {
             super(new Position(1, 3), new Position(2, 2), new Position(3, 1));
         }
     }
 
     private static class BoardConditionWon implements GameEndCondition {
 
-        private final Dimension dimension;
+        private final DimensionEvaluation dimensionEvaluation;
 
-        public BoardConditionWon(Dimension dimension) {
-            this.dimension = dimension;
+        public BoardConditionWon(DimensionEvaluation dimensionEvaluation) {
+            this.dimensionEvaluation = dimensionEvaluation;
         }
 
         @Override
         public TicTacToeState nextState(TicTacToeState ticTacToeState) {
             return ticTacToeState.won();
-        }
-    }
-
-    private class DimensionWinningNotFound extends DimensionWinning {
-        @Override
-        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
-            return evaluateIfNotPresent.condition();
         }
     }
 }

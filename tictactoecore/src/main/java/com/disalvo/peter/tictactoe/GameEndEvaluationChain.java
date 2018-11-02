@@ -3,21 +3,21 @@ import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondit
 
 abstract class GameEndEvaluationChain implements GameEndEvaluation {
 
-    private final GameEndEvaluation evaluateIfNotPresent;
+    private final GameEndEvaluation evaluationIfNotPresent;
 
-    public GameEndEvaluationChain(GameEndEvaluation evaluateIfNotPresent) {
-        this.evaluateIfNotPresent = evaluateIfNotPresent;
+    public GameEndEvaluationChain(GameEndEvaluation evaluationIfNotPresent) {
+        this.evaluationIfNotPresent = evaluationIfNotPresent;
     }
 
     @Override
     public GameEndCondition result(Board board, Mark mark) {
-        return condition(board, mark, () -> board.evaluationResult(evaluateIfNotPresent, mark));
+        return result(board, mark, () -> board.evaluationResult(evaluationIfNotPresent, mark));
     }
 
-    protected abstract GameEndCondition condition(Board board, Mark mark, NotPresentEvaluation evaluateIfNotPresent);
+    protected abstract GameEndCondition result(Board board, Mark mark, NotPresentEvaluation notPresentEvaluation);
 
     @FunctionalInterface
     interface NotPresentEvaluation {
-        GameEndCondition condition();
+        GameEndCondition result();
     }
 }

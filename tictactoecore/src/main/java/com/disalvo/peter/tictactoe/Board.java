@@ -40,28 +40,12 @@ public class Board {
         return mark.equals(markAtPosition(position));
     }
 
-    public <T> T evaluationResult(BoardEvaluation<T> evaluation, Mark mark) {
-        return evaluation.result(this, mark);
-    }
-
-    public <D extends Dimension> D firstDimensionFilledWithMarkOrDefault(Dimensions<D> dimensions, Mark mark, D defaultDimension) {
-        for(D dimension : dimensions) {
-            if(dimension.isFilledWithMarkOnGrid(mark, this))
-                return dimension;
-        }
-        return defaultDimension;
-    }
-
     public boolean isEmptyPosition(Position position) {
         return !positions.containsKey(position);
     }
 
-    interface Dimension {
-        boolean isFilledWithMarkOnGrid(Mark mark, Board board);
-    }
-
-    interface Dimensions<D extends Dimension> extends Iterable<D> {
-
+    public <T> T evaluationResult(BoardEvaluation<T> evaluation, Mark mark) {
+        return evaluation.result(this, mark);
     }
 
     interface BoardEvaluation<T> {
