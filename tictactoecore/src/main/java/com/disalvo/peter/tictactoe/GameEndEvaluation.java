@@ -1,8 +1,8 @@
 package com.disalvo.peter.tictactoe;
 
-import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
-import static com.disalvo.peter.tictactoe.Grid.GridEvaluation;
+import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.BoardCondition;
+import static com.disalvo.peter.tictactoe.Board.BoardEvaluation;
 
-interface GameEndEvaluation extends GridEvaluation<GameEndCondition> {
+interface GameEndEvaluation extends BoardEvaluation<BoardCondition> {
 
 }

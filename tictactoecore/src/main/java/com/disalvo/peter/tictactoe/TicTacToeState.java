@@ -17,9 +17,9 @@ interface TicTacToeState {
     TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position);
 
     interface PlayState {
-        TicTacToeState nextState(GameEndCondition gameEndCondition);
+        TicTacToeState nextState(BoardCondition boardCondition);
 
-        interface GameEndCondition {
+        interface BoardCondition {
             TicTacToeState nextState(TicTacToeState ticTacToeState);
         }
     }

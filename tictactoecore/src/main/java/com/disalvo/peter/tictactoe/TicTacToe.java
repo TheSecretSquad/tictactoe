@@ -3,33 +3,43 @@ package com.disalvo.peter.tictactoe;
 import static com.disalvo.peter.tictactoe.TicTacToeState.StateAnnouncer;
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState;
 import static com.disalvo.peter.tictactoe.Play.UnvalidatedPlay;
+import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.BoardCondition;
+import static com.disalvo.peter.tictactoe.GameEndEvaluationNone.BoardConditionNone;
 
 public class TicTacToe implements Game, StateAnnouncer {
     private static final Mark X = new Mark("x");
     private static final Mark O = new Mark("o");
 
     private final GameListener listener;
+    private final GameEndEvaluation endEvaluation;
     private TicTacToeState state;
     private Board board;
     private Turn turn;
+    private BoardCondition endCondition;
 
     public TicTacToe(GameListener listener) {
         this(
                 listener,
                 new TicTacToeStateInitial(),
                 new Board(),
-                new Turn(X, O)
+                new Turn(X, O),
+                new GameEndEvaluationWon(new GameEndEvaluationStalemate(new GameEndEvaluationNone())),
+                new BoardConditionNone()
         );
     }
 
     private TicTacToe(GameListener listener,
                       TicTacToeState state,
                       Board board,
-                      Turn turn) {
+                      Turn turn,
+                      GameEndEvaluation endEvaluation,
+                      BoardCondition endCondition) {
         this.listener = listener;
         this.state = state;
         this.board = board;
         this.turn = turn;
+        this.endEvaluation = endEvaluation;
+        this.endCondition = endCondition;
     }
 
     @Override
@@ -55,7 +65,8 @@ public class TicTacToe implements Game, StateAnnouncer {
 
     public TicTacToe applyPlay(Mark mark, Position position, PlayState playState) {
         board = board.withMarkAtPosition(mark, position);
-        state = playState.nextState(board);
+        endCondition = board.evaluationResult(endEvaluation, mark);
+        state = playState.nextState(endCondition);
         turn = turn.next(state);
         state.announceTo(this, mark, position);
         return this;

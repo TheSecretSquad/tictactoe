@@ -1,43 +1,75 @@
 package com.disalvo.peter.tictactoe;
 
-import static com.disalvo.peter.tictactoe.GameEndEvaluationNone.GameEndConditionNone;
-import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
+import java.util.HashMap;
+import java.util.Map;
 
-class Board implements GameEndCondition {
+public class Board {
     private static final int DEFAULT_SIZE = 9;
-    private final Grid grid;
-    private final GameEndCondition condition;
-    private final GameEndEvaluation evaluation;
+
+    private final int size;
+    private final Map<Position, Mark> positions;
 
     public Board() {
-        this(DEFAULT_SIZE); // TODO: Create Size class? Size should be positive, even integer
+        this(DEFAULT_SIZE, new HashMap<>());
     }
 
     public Board(int size) {
-        this(
-                new Grid(size),
-                new GameEndConditionNone(),
-                new GameEndEvaluationWon(new GameEndEvaluationStalemate(new GameEndEvaluationNone()))
-        );
+        this(size, new HashMap<>());
     }
 
-    private Board(Grid grid, GameEndCondition condition, GameEndEvaluation evaluation) {
-        this.grid = grid;
-        this.condition = condition;
-        this.evaluation = evaluation;
+    private Board(int size, Map<Position, Mark> positions) {
+        this.size = size;
+        this.positions = positions;
     }
 
     public Board withMarkAtPosition(Mark mark, Position position) {
-        Grid nextGrid = grid.withMarkAtPosition(mark, position);
-        return new Board(nextGrid, nextGrid.evaluationResult(evaluation, mark), evaluation);
+        Map<Position, Mark> newPositions = new HashMap<>(positions);
+        newPositions.put(position, mark);
+        return new Board(size, newPositions);
     }
 
-    @Override
-    public TicTacToeState nextState(TicTacToeState ticTacToeState) {
-        return condition.nextState(ticTacToeState);
+    private Mark markAtPosition(Position position) {
+        return positions.get(position);
+    }
+
+    public boolean isFilled() {
+        return positions.size() == size;
+    }
+
+    public boolean isPositionOccupiedByMark(Position position, Mark mark) {
+        return mark.equals(markAtPosition(position));
+    }
+
+    public <T> T evaluationResult(BoardEvaluation<T> evaluation, Mark mark) {
+        return evaluation.result(this, mark);
+    }
+
+    public <D extends Dimension> D firstDimensionFilledWithMarkOrDefault(Dimensions<D> dimensions, Mark mark, D defaultDimension) {
+        for(D dimension : dimensions) {
+            if(dimension.isFilledWithMarkOnGrid(mark, this))
+                return dimension;
+        }
+        return defaultDimension;
     }
 
     public Play validatedPlay(Play play, Position position) {
-        return grid.isEmptyPosition(position) ? play.validPosition() : play;
+        return isEmptyPosition(position) ? play.validPosition() : play;
+    }
+
+    private boolean isEmptyPosition(Position position) {
+        return !positions.containsKey(position);
+    }
+
+    interface Dimension {
+        boolean isFilledWithMarkOnGrid(Mark mark, Board board);
+    }
+
+    interface Dimensions<D extends Dimension> extends Iterable<D> {
+
+    }
+
+    interface BoardEvaluation<T> {
+
+        T result(Board board, Mark mark);
     }
 }

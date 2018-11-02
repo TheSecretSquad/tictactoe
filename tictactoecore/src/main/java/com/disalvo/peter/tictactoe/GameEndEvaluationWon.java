@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
-import static com.disalvo.peter.tictactoe.Grid.Dimension;
-import static com.disalvo.peter.tictactoe.Grid.Dimensions;
+import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.BoardCondition;
+import static com.disalvo.peter.tictactoe.Board.Dimension;
+import static com.disalvo.peter.tictactoe.Board.Dimensions;
 
 class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions {
     private static Dimension LeftColumn() { return new DimensionColumn(1); }
@@ -31,8 +31,8 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
     }
 
     @Override
-    protected GameEndCondition condition(Grid grid, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
-        DimensionWinning dimension = grid.firstDimensionFilledWithMarkOrDefault(this, mark, new DimensionWinningNotFound());
+    protected BoardCondition condition(Board board, Mark mark, NotPresentEvaluation evaluateIfNotPresent) {
+        DimensionWinning dimension = board.firstDimensionFilledWithMarkOrDefault(this, mark, new DimensionWinningNotFound());
         return dimension.condition(evaluateIfNotPresent);
     }
 
@@ -57,12 +57,12 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
         }
 
         @Override
-        public boolean isFilledWithMarkOnGrid(Mark mark, Grid grid) {
-            return positions.stream().allMatch(position -> grid.isPositionOccupiedByMark(position, mark));
+        public boolean isFilledWithMarkOnGrid(Mark mark, Board board) {
+            return positions.stream().allMatch(position -> board.isPositionOccupiedByMark(position, mark));
         }
 
-        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
-            return new GameEndConditionWon(this);
+        public BoardCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
+            return new BoardConditionWon(this);
         }
     }
 
@@ -93,11 +93,11 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
         }
     }
 
-    private static class GameEndConditionWon implements GameEndCondition {
+    private static class BoardConditionWon implements BoardCondition {
 
         private final Dimension dimension;
 
-        public GameEndConditionWon(Dimension dimension) {
+        public BoardConditionWon(Dimension dimension) {
             this.dimension = dimension;
         }
 
@@ -109,7 +109,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain implements Dimensions 
 
     private class DimensionWinningNotFound extends DimensionWinning {
         @Override
-        public GameEndCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
+        public BoardCondition condition(NotPresentEvaluation evaluateIfNotPresent) {
             return evaluateIfNotPresent.condition();
         }
     }

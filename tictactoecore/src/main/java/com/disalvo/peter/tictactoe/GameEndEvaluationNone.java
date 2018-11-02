@@ -1,13 +1,13 @@
 package com.disalvo.peter.tictactoe;
-import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
+import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.BoardCondition;
 
 public class GameEndEvaluationNone implements GameEndEvaluation {
     @Override
-    public GameEndCondition result(Grid grid, Mark mark) {
-        return new GameEndConditionNone();
+    public BoardCondition result(Board board, Mark mark) {
+        return new BoardConditionNone();
     }
 
-    static class GameEndConditionNone implements GameEndCondition {
+    static class BoardConditionNone implements BoardCondition {
 
         @Override
         public TicTacToeState nextState(TicTacToeState ticTacToeState) {

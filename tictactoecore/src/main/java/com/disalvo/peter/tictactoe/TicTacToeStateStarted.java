@@ -51,8 +51,8 @@ class TicTacToeStateStarted implements TicTacToeState {
         }
 
         @Override
-        public TicTacToeState nextState(GameEndCondition gameEndCondition) {
-            return gameEndCondition.nextState(startingState);
+        public TicTacToeState nextState(BoardCondition boardCondition) {
+            return boardCondition.nextState(startingState);
         }
     }
 }
