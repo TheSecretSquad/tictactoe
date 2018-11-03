@@ -36,7 +36,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain {
         return notPresentEvaluation.result();
     }
 
-    public static class DimensionEvaluation implements Board.BoardEvaluation<Boolean> {
+    private static class DimensionEvaluation implements Board.BoardEvaluation<Boolean> {
         private final List<Position> positions;
 
         public DimensionEvaluation(Position position1, Position position2, Position position3) {
