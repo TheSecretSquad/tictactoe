@@ -4,28 +4,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Board {
-    private static final int DEFAULT_SIZE = 9;
+    private static final int DEFAULT_DIMENSION = 3;
 
-    private final int size;
+    private final int dimension;
     private final Map<Position, Mark> positions;
 
     public Board() {
-        this(DEFAULT_SIZE, new HashMap<>());
+        this(DEFAULT_DIMENSION, new HashMap<>());
     }
 
-    public Board(int size) {
-        this(size, new HashMap<>());
+    public Board(int dimension) {
+        this(dimension, new HashMap<>());
     }
 
-    private Board(int size, Map<Position, Mark> positions) {
-        this.size = size;
+    private Board(int dimension, Map<Position, Mark> positions) {
+        this.dimension = dimension;
         this.positions = positions;
     }
 
     public Board withMarkAtPosition(Mark mark, Position position) {
         Map<Position, Mark> newPositions = new HashMap<>(positions);
         newPositions.put(position, mark);
-        return new Board(size, newPositions);
+        return new Board(dimension, newPositions);
     }
 
     private Mark markAtPosition(Position position) {
@@ -33,7 +33,7 @@ public class Board {
     }
 
     public boolean isFilled() {
-        return positions.size() == size;
+        return positions.size() == dimension * dimension;
     }
 
     public boolean isPositionOccupiedByMark(Position position, Mark mark) {
@@ -45,11 +45,11 @@ public class Board {
     }
 
     public <T> T evaluationResult(BoardEvaluation<T> evaluation, Mark mark) {
-        return evaluation.result(this, mark);
+        return evaluation.result(this, mark, dimension);
     }
 
     interface BoardEvaluation<T> {
 
-        T result(Board board, Mark mark);
+        T result(Board board, Mark mark, int dimension);
     }
 }

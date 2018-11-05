@@ -17,10 +17,14 @@ public class TicTacToe implements Game, StateAnnouncer {
     private GameEndCondition endCondition;
 
     public TicTacToe(GameListener listener) {
+        this(listener, new Board());
+    }
+
+    public TicTacToe(GameListener listener, Board board) {
         this(
                 listener,
                 new TicTacToeStateInitial(),
-                new Board(),
+                board,
                 new Turn(X, O),
                 new GameEndEvaluationWon(new GameEndEvaluationStalemate(new GameEndEvaluationNone())),
                 new BoardConditionNone()

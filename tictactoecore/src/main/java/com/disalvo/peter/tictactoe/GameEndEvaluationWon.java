@@ -1,82 +1,110 @@
 package com.disalvo.peter.tictactoe;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import static com.disalvo.peter.tictactoe.Board.BoardEvaluation;
 
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
 
 class GameEndEvaluationWon extends GameEndEvaluationChain {
-    private static DimensionEvaluation LeftColumn() { return new DimensionEvaluationColumn(1); }
-    private static DimensionEvaluation CenterColumn() { return new DimensionEvaluationColumn(2); }
-    private static DimensionEvaluation RightColumn() { return new DimensionEvaluationColumn(3); }
-    private static DimensionEvaluation TopRow() { return new DimensionEvaluationRow(1); }
-    private static DimensionEvaluation MiddleRow() { return new DimensionEvaluationRow(2); }
-    private static DimensionEvaluation BottomRow() { return new DimensionEvaluationRow(3); }
-    private static DimensionEvaluation TopLeftToBottomRightDiagonal() { return new DimensionEvaluationTopLeftToBottomRightDiagonal(); }
-    private static DimensionEvaluation TopRightToBottomLeftDiagonal() { return new DimensionEvaluationTopRightToBottomLeftDiagonal(); }
 
-    private static final List<DimensionEvaluation> AllDimensions =
-            Arrays.asList(
-                    LeftColumn(), CenterColumn(), RightColumn(),
-                    TopRow(), MiddleRow(), BottomRow(),
-                    TopLeftToBottomRightDiagonal(), TopRightToBottomLeftDiagonal()
-            );
+    private static List<DimensionEvaluation> allDimensions(int dimension) {
+        List<DimensionEvaluation> dimensions = new ArrayList<>();
+        for(int dim = 1; dim <= dimension; dim++) {
+            dimensions.add(new DimensionEvaluationColumn(dim));
+            dimensions.add(new DimensionEvaluationRow(dim));
+        }
+
+        dimensions.add(new DimensionEvaluationTopRightToBottomLeftDiagonal());
+        dimensions.add(new DimensionEvaluationTopLeftToBottomRightDiagonal());
+        return dimensions;
+    }
 
     public GameEndEvaluationWon(GameEndEvaluation evaluateIfNotPresent) {
         super(evaluateIfNotPresent);
     }
 
     @Override
-    protected GameEndCondition result(Board board, Mark mark, NotPresentEvaluation notPresentEvaluation) {
-        for(DimensionEvaluation dimensionEvaluation : AllDimensions) {
-            if(board.evaluationResult(dimensionEvaluation, mark)) {
+    protected GameEndCondition result(Board board, Mark mark, int dimension, NotPresentEvaluation notPresentEvaluation) {
+        for (DimensionEvaluation dimensionEvaluation : allDimensions(dimension)) {
+            if (board.evaluationResult(dimensionEvaluation, mark)) {
                 return new BoardConditionWon(dimensionEvaluation);
             }
         }
         return notPresentEvaluation.result();
     }
 
-    private static class DimensionEvaluation implements Board.BoardEvaluation<Boolean> {
-        private final List<Position> positions;
+    private static abstract class DimensionEvaluation implements BoardEvaluation<Boolean> {
 
-        public DimensionEvaluation(Position position1, Position position2, Position position3) {
-            this(Arrays.asList(position1, position2, position3));
+        @Override
+        public Boolean result(Board board, Mark mark, int dimension) {
+            return positions(dimension).stream().allMatch(position -> board.isPositionOccupiedByMark(position, mark));
         }
 
-        private DimensionEvaluation(List<Position> positions) {
-            this.positions = positions;
+        protected abstract List<Position> positions(int dimension);
+    }
+
+    private static abstract class DimensionEvaluationColumnOrRow extends DimensionEvaluation {
+
+        @Override
+        protected List<Position> positions(int dimension) {
+            List<Position> positions = new ArrayList<>(dimension);
+            for(int rowOrColumn = 1; rowOrColumn <= dimension; rowOrColumn++) {
+                positions.add(position(rowOrColumn));
+            }
+            return positions;
+        }
+
+        protected abstract Position position(int rowOrColumn);
+    }
+
+    private static class DimensionEvaluationColumn extends DimensionEvaluationColumnOrRow {
+        private final int column;
+
+        public DimensionEvaluationColumn(int column) {
+            this.column = column;
         }
 
         @Override
-        public Boolean result(Board board, Mark mark) {
-            return positions.stream().allMatch(position -> board.isPositionOccupiedByMark(position, mark));
+        protected Position position(int rowOrColumn) {
+            return new Position(rowOrColumn, column);
         }
     }
 
-    private static class DimensionEvaluationColumn extends DimensionEvaluation {
+    private static class DimensionEvaluationRow extends DimensionEvaluationColumnOrRow {
+        private final int row;
 
-        public DimensionEvaluationColumn(int column) {
-            super(new Position(1, column), new Position(2, column), new Position(3, column));
-        }
-    }
-
-    private static class DimensionEvaluationRow extends DimensionEvaluation {
         public DimensionEvaluationRow(int row) {
-            super(new Position(row, 1), new Position(row, 2), new Position(row, 3));
+            this.row = row;
+        }
+
+        @Override
+        protected Position position(int rowOrColumn) {
+            return new Position(row, rowOrColumn);
         }
     }
 
     private static class DimensionEvaluationTopLeftToBottomRightDiagonal extends DimensionEvaluation {
 
-        public DimensionEvaluationTopLeftToBottomRightDiagonal() {
-            super(new Position(1, 1), new Position(2, 2), new Position(3, 3));
+        @Override
+        protected List<Position> positions(int dimension) {
+            List<Position> positions = new ArrayList<>(dimension);
+            for(int dim = 1; dim <= dimension; dim++) {
+                positions.add(new Position(dim, dim));
+            }
+            return positions;
         }
     }
 
     private static class DimensionEvaluationTopRightToBottomLeftDiagonal extends DimensionEvaluation {
 
-        public DimensionEvaluationTopRightToBottomLeftDiagonal() {
-            super(new Position(1, 3), new Position(2, 2), new Position(3, 1));
+        @Override
+        protected List<Position> positions(int dimension) {
+            List<Position> positions = new ArrayList<>(dimension);
+            for(int row = 1, column = dimension; row <= dimension && column >= 1; row++, column--) {
+                positions.add(new Position(row, column));
+            }
+            return positions;
         }
     }
 

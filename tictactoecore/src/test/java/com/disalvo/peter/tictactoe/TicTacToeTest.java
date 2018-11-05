@@ -1,6 +1,5 @@
 package com.disalvo.peter.tictactoe;
 
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -76,7 +75,6 @@ public class TicTacToeTest
     public void cannotStartAStartedGame() {
         aStartedGame().start();
     }
-
 
     @Test(expected = GameExceptionRestartStopped.class)
     public void cannotRestartAStoppedGame() {
@@ -256,4 +254,18 @@ public class TicTacToeTest
     }
 
     // TODO: Test out of bounds position throws exception
+
+    @Test
+    public void supportsDifferentSizedBoard() {
+        TicTacToe subject = new TicTacToe(gameListener, new Board(4)).start();
+        subject.playMarkAtPosition(new Mark("x"), new Position(1, 1))
+                .playMarkAtPosition(new Mark("o"), new Position(2, 1))
+                .playMarkAtPosition(new Mark("x"), new Position(2, 2))
+                .playMarkAtPosition(new Mark("o"), new Position(3, 1))
+                .playMarkAtPosition(new Mark("x"), new Position(3, 3))
+                .playMarkAtPosition(new Mark("o"), new Position(4, 1))
+                .playMarkAtPosition(new Mark("x"), new Position(4, 4));
+
+        verify(gameListener).winningPlay(subject, new Mark("x"), new Position(4, 4));
+    }
 }

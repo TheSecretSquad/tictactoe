@@ -8,7 +8,7 @@ class GameEndEvaluationStalemate extends GameEndEvaluationChain {
     }
 
     @Override
-    public GameEndCondition result(Board board, Mark mark, NotPresentEvaluation notPresentEvaluation) {
+    public GameEndCondition result(Board board, Mark mark, int dimension, NotPresentEvaluation notPresentEvaluation) {
         return board.isFilled() ? new BoardConditionStalemate() : notPresentEvaluation.result();
     }
 
