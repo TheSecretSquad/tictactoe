@@ -1,6 +1,7 @@
 package com.disalvo.peter.tictactoe;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import static com.disalvo.peter.tictactoe.Board.BoardEvaluation;
 
@@ -21,31 +22,72 @@ class GameEndEvaluationWon extends GameEndEvaluationChain {
 
     @Override
     protected GameEndCondition result(Board board, Mark mark, int boardSize, NotPresentEvaluation notPresentEvaluation) {
+        Iterator<PatternEvaluation> patternEvaluationIterator = patternEvaluations.iterator();
 
-        for(PatternEvaluation evaluation : patternEvaluations) {
-            if(board.evaluationResult(evaluation, mark)) {
-                return new BoardConditionWon(evaluation);
-            }
+        PatternEvaluationResult patternEvaluationResult = new PatternEvaluationResultNotFound();
+
+        while(!patternEvaluationResult.isFound() && patternEvaluationIterator.hasNext()) {
+            PatternEvaluation patternEvaluation = patternEvaluationIterator.next();
+            patternEvaluationResult = board.evaluationResult(patternEvaluation, mark);
         }
 
-        return notPresentEvaluation.result();
+        return patternEvaluationResult.condition(notPresentEvaluation);
     }
 
-    interface PatternEvaluation extends BoardEvaluation<Boolean>{
+    interface PatternEvaluation extends BoardEvaluation<PatternEvaluationResult>{
 
+    }
+
+    private interface PatternEvaluationResult {
+
+        boolean isFound();
+
+        GameEndCondition condition(NotPresentEvaluation notPresentEvaluation);
+    }
+
+    private static class PatternEvaluationResultFound implements PatternEvaluationResult {
+
+        private final PositionCollection positionCollection;
+
+        public PatternEvaluationResultFound(PositionCollection positionCollection) {
+            this.positionCollection = positionCollection;
+        }
+
+        @Override
+        public boolean isFound() {
+            return true;
+        }
+
+        @Override
+        public GameEndCondition condition(NotPresentEvaluation notPresentEvaluation) {
+            return new BoardConditionWon(positionCollection);
+        }
+    }
+
+    private static class PatternEvaluationResultNotFound implements PatternEvaluationResult {
+
+        @Override
+        public boolean isFound() {
+            return false;
+        }
+
+        @Override
+        public GameEndCondition condition(NotPresentEvaluation notPresentEvaluation) {
+            return notPresentEvaluation.result();
+        }
     }
 
     private static abstract class PatternEvaluationDimension implements PatternEvaluation {
 
         @Override
-        public Boolean result(Board board, Mark mark, int boardSize) {
+        public PatternEvaluationResult result(Board board, Mark mark, int boardSize) {
             for(Range range : dimensionFor(boardSize)) {
                 if(board.arePositionsOccupiedByMark(range, mark)) {
-                    return true;
+                    return new PatternEvaluationResultFound(range);
                 }
             }
 
-            return false;
+            return new PatternEvaluationResultNotFound();
         }
 
         protected abstract Dimension dimensionFor(int boardSize);
@@ -69,10 +111,10 @@ class GameEndEvaluationWon extends GameEndEvaluationChain {
 
     private static class BoardConditionWon implements GameEndCondition {
 
-        private final PatternEvaluation patternEvaluation;
+        private final PositionCollection positionCollection;
 
-        public BoardConditionWon(PatternEvaluation patternEvaluation) {
-            this.patternEvaluation = patternEvaluation;
+        public BoardConditionWon(PositionCollection positionCollection) {
+            this.positionCollection = positionCollection;
         }
 
         @Override
