@@ -22,8 +22,8 @@ public class GameEndEvaluationWon extends GameEndEvaluationChain {
     public GameEndEvaluationWon(GameEndEvaluation evaluateIfNotPresent) {
         super(evaluateIfNotPresent);
         this.patternEvaluations = new ArrayList<>();
-        patternEvaluations.add(new PatternEvaluationDimensionColumn());
-        patternEvaluations.add(new PatternEvaluationDimensionRow());
+        patternEvaluations.add(new PatternEvaluationColumns());
+        patternEvaluations.add(new PatternEvaluationRows());
     }
 
     @Override
@@ -98,7 +98,7 @@ public class GameEndEvaluationWon extends GameEndEvaluationChain {
         protected abstract Dimension dimensionFor(int boardSize);
     }
 
-    private static class PatternEvaluationDimensionColumn extends PatternEvaluationDimension {
+    private static class PatternEvaluationColumns extends PatternEvaluationDimension {
 
         @Override
         protected Dimension dimensionFor(int boardSize) {
@@ -106,12 +106,11 @@ public class GameEndEvaluationWon extends GameEndEvaluationChain {
         }
     }
 
-    private static class PatternEvaluationDimensionRow extends PatternEvaluationDimension {
+    private static class PatternEvaluationRows extends PatternEvaluationDimension {
 
         @Override
         protected Dimension dimensionFor(int boardSize) {
             return new DimensionRow(boardSize);
         }
     }
-
 }
