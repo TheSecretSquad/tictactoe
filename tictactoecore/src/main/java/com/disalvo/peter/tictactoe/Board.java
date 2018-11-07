@@ -2,30 +2,31 @@ package com.disalvo.peter.tictactoe;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.StreamSupport;
 
 public class Board {
-    private static final int DEFAULT_DIMENSION = 3;
+    private static final int DEFAULT_SIZE = 3;
 
-    private final int dimension;
+    private final int size;
     private final Map<Position, Mark> positions;
 
     public Board() {
-        this(DEFAULT_DIMENSION, new HashMap<>());
+        this(DEFAULT_SIZE, new HashMap<>());
     }
 
-    public Board(int dimension) {
-        this(dimension, new HashMap<>());
+    public Board(int size) {
+        this(size, new HashMap<>());
     }
 
-    private Board(int dimension, Map<Position, Mark> positions) {
-        this.dimension = dimension;
+    private Board(int size, Map<Position, Mark> positions) {
+        this.size = size;
         this.positions = positions;
     }
 
     public Board withMarkAtPosition(Mark mark, Position position) {
         Map<Position, Mark> newPositions = new HashMap<>(positions);
         newPositions.put(position, mark);
-        return new Board(dimension, newPositions);
+        return new Board(size, newPositions);
     }
 
     private Mark markAtPosition(Position position) {
@@ -33,11 +34,15 @@ public class Board {
     }
 
     public boolean isFilled() {
-        return positions.size() == dimension * dimension;
+        return positions.size() == size * size;
     }
 
     public boolean isPositionOccupiedByMark(Position position, Mark mark) {
         return mark.equals(markAtPosition(position));
+    }
+
+    public boolean arePositionsOccupiedByMark(PositionCollection positionCollection, Mark mark) {
+        return StreamSupport.stream(positionCollection.spliterator(), true).allMatch(p -> isPositionOccupiedByMark(p, mark));
     }
 
     public boolean isEmptyPosition(Position position) {
@@ -45,11 +50,15 @@ public class Board {
     }
 
     public <T> T evaluationResult(BoardEvaluation<T> evaluation, Mark mark) {
-        return evaluation.result(this, mark, dimension);
+        return evaluation.result(this, mark, size);
     }
 
     interface BoardEvaluation<T> {
 
-        T result(Board board, Mark mark, int dimension);
+        T result(Board board, Mark mark, int boardSize);
+    }
+
+    interface PositionCollection extends Iterable<Position> {
+
     }
 }

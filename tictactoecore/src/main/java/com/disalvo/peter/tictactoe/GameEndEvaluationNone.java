@@ -3,7 +3,7 @@ import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondit
 
 public class GameEndEvaluationNone implements GameEndEvaluation {
     @Override
-    public GameEndCondition result(Board board, Mark mark, int dimension) {
+    public GameEndCondition result(Board board, Mark mark, int boardSize) {
         return new BoardConditionNone();
     }
 

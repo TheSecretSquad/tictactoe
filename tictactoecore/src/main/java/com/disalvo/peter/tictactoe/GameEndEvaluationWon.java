@@ -4,121 +4,84 @@ import java.util.ArrayList;
 import java.util.List;
 import static com.disalvo.peter.tictactoe.Board.BoardEvaluation;
 
+import static com.disalvo.peter.tictactoe.Board.PositionCollection;
+
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
 
 class GameEndEvaluationWon extends GameEndEvaluationChain {
 
-    private static List<DimensionEvaluation> allDimensions(int dimension) {
-        List<DimensionEvaluation> dimensions = new ArrayList<>();
-        for(int dim = 1; dim <= dimension; dim++) {
-            dimensions.add(new DimensionEvaluationColumn(dim));
-            dimensions.add(new DimensionEvaluationRow(dim));
-        }
-
-        dimensions.add(new DimensionEvaluationTopRightToBottomLeftDiagonal());
-        dimensions.add(new DimensionEvaluationTopLeftToBottomRightDiagonal());
-        return dimensions;
-    }
+    private final List<PatternEvaluation> patternEvaluations;
 
     public GameEndEvaluationWon(GameEndEvaluation evaluateIfNotPresent) {
         super(evaluateIfNotPresent);
+        this.patternEvaluations = new ArrayList<>();
+        patternEvaluations.add(new PatternEvaluationDimensionColumn());
+        patternEvaluations.add(new PatternEvaluationDimensionRow());
     }
 
     @Override
-    protected GameEndCondition result(Board board, Mark mark, int dimension, NotPresentEvaluation notPresentEvaluation) {
-        for (DimensionEvaluation dimensionEvaluation : allDimensions(dimension)) {
-            if (board.evaluationResult(dimensionEvaluation, mark)) {
-                return new BoardConditionWon(dimensionEvaluation);
+    protected GameEndCondition result(Board board, Mark mark, int boardSize, NotPresentEvaluation notPresentEvaluation) {
+
+        for(PatternEvaluation evaluation : patternEvaluations) {
+            if(board.evaluationResult(evaluation, mark)) {
+                return new BoardConditionWon(evaluation);
             }
         }
+
         return notPresentEvaluation.result();
     }
 
-    private static abstract class DimensionEvaluation implements BoardEvaluation<Boolean> {
+    interface PatternEvaluation extends BoardEvaluation<Boolean>{
 
-        @Override
-        public Boolean result(Board board, Mark mark, int dimension) {
-            return positions(dimension).stream().allMatch(position -> board.isPositionOccupiedByMark(position, mark));
-        }
-
-        protected abstract List<Position> positions(int dimension);
     }
 
-    private static abstract class DimensionEvaluationColumnOrRow extends DimensionEvaluation {
+    private static abstract class PatternEvaluationDimension implements PatternEvaluation {
 
         @Override
-        protected List<Position> positions(int dimension) {
-            List<Position> positions = new ArrayList<>(dimension);
-            for(int rowOrColumn = 1; rowOrColumn <= dimension; rowOrColumn++) {
-                positions.add(position(rowOrColumn));
+        public Boolean result(Board board, Mark mark, int boardSize) {
+            for(Range range : dimensionFor(boardSize)) {
+                if(board.arePositionsOccupiedByMark(range, mark)) {
+                    return true;
+                }
             }
-            return positions;
+
+            return false;
         }
 
-        protected abstract Position position(int rowOrColumn);
+        protected abstract Dimension dimensionFor(int boardSize);
     }
 
-    private static class DimensionEvaluationColumn extends DimensionEvaluationColumnOrRow {
-        private final int column;
-
-        public DimensionEvaluationColumn(int column) {
-            this.column = column;
-        }
+    private static class PatternEvaluationDimensionColumn extends PatternEvaluationDimension {
 
         @Override
-        protected Position position(int rowOrColumn) {
-            return new Position(rowOrColumn, column);
+        protected Dimension dimensionFor(int boardSize) {
+            return new Position.ColumnDimension(boardSize);
         }
     }
 
-    private static class DimensionEvaluationRow extends DimensionEvaluationColumnOrRow {
-        private final int row;
-
-        public DimensionEvaluationRow(int row) {
-            this.row = row;
-        }
+    private static class PatternEvaluationDimensionRow extends PatternEvaluationDimension {
 
         @Override
-        protected Position position(int rowOrColumn) {
-            return new Position(row, rowOrColumn);
-        }
-    }
-
-    private static class DimensionEvaluationTopLeftToBottomRightDiagonal extends DimensionEvaluation {
-
-        @Override
-        protected List<Position> positions(int dimension) {
-            List<Position> positions = new ArrayList<>(dimension);
-            for(int dim = 1; dim <= dimension; dim++) {
-                positions.add(new Position(dim, dim));
-            }
-            return positions;
-        }
-    }
-
-    private static class DimensionEvaluationTopRightToBottomLeftDiagonal extends DimensionEvaluation {
-
-        @Override
-        protected List<Position> positions(int dimension) {
-            List<Position> positions = new ArrayList<>(dimension);
-            for(int row = 1, column = dimension; row <= dimension && column >= 1; row++, column--) {
-                positions.add(new Position(row, column));
-            }
-            return positions;
+        protected Dimension dimensionFor(int boardSize) {
+            return new Position.RowDimension(boardSize);
         }
     }
 
     private static class BoardConditionWon implements GameEndCondition {
 
-        private final DimensionEvaluation dimensionEvaluation;
+        private final PatternEvaluation patternEvaluation;
 
-        public BoardConditionWon(DimensionEvaluation dimensionEvaluation) {
-            this.dimensionEvaluation = dimensionEvaluation;
+        public BoardConditionWon(PatternEvaluation patternEvaluation) {
+            this.patternEvaluation = patternEvaluation;
         }
 
         @Override
         public TicTacToeState nextState(TicTacToeState ticTacToeState) {
             return ticTacToeState.won();
         }
+    }
+
+    interface Dimension extends Iterable<Range> {
+
     }
 }
