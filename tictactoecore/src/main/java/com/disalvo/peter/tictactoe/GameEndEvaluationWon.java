@@ -22,9 +22,8 @@ class GameEndEvaluationWon extends GameEndEvaluationChain {
 
     @Override
     protected GameEndCondition result(Board board, Mark mark, int boardSize, NotPresentEvaluation notPresentEvaluation) {
-        Iterator<PatternEvaluation> patternEvaluationIterator = patternEvaluations.iterator();
-
         PatternEvaluationResult patternEvaluationResult = new PatternEvaluationResultNotFound();
+        Iterator<PatternEvaluation> patternEvaluationIterator = patternEvaluations.iterator();
 
         while(!patternEvaluationResult.isFound() && patternEvaluationIterator.hasNext()) {
             PatternEvaluation patternEvaluation = patternEvaluationIterator.next();
