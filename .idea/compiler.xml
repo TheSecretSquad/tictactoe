@@ -10,10 +10,5 @@
         <module name="tictactoeui" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="tictactoe" target="1.8" />
-      <module name="tictactoecore" target="1.8" />
-      <module name="tictactoeui" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

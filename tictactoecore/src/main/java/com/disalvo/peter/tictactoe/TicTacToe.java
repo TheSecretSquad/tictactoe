@@ -1,6 +1,5 @@
 package com.disalvo.peter.tictactoe;
 
-import com.disalvo.peter.tictactoe.*;
 import com.disalvo.peter.tictactoe.board.Board;
 import com.disalvo.peter.tictactoe.gameEndEvaluation.BoardConditionNone;
 import com.disalvo.peter.tictactoe.gameEndEvaluation.GameEndEvaluationNone;
