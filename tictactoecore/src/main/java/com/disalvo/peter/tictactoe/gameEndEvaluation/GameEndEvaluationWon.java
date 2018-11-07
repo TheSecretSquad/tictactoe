@@ -1,15 +1,21 @@
-package com.disalvo.peter.tictactoe;
+package com.disalvo.peter.tictactoe.gameEndEvaluation;
+
+import com.disalvo.peter.tictactoe.board.Board;
+import com.disalvo.peter.tictactoe.board.BoardEvaluation;
+import com.disalvo.peter.tictactoe.board.PositionCollection;
+import com.disalvo.peter.tictactoe.GameEndEvaluation;
+import com.disalvo.peter.tictactoe.gameEndEvaluation.dimension.DimensionColumn;
+import com.disalvo.peter.tictactoe.gameEndEvaluation.dimension.DimensionRow;
+import com.disalvo.peter.tictactoe.Mark;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import static com.disalvo.peter.tictactoe.Board.BoardEvaluation;
 
-import static com.disalvo.peter.tictactoe.Board.PositionCollection;
 
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
 
-class GameEndEvaluationWon extends GameEndEvaluationChain {
+public class GameEndEvaluationWon extends GameEndEvaluationChain {
 
     private final List<PatternEvaluation> patternEvaluations;
 
@@ -33,7 +39,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain {
         return patternEvaluationResult.condition(notPresentEvaluation);
     }
 
-    interface PatternEvaluation extends BoardEvaluation<PatternEvaluationResult>{
+    interface PatternEvaluation extends BoardEvaluation<PatternEvaluationResult> {
 
     }
 
@@ -96,7 +102,7 @@ class GameEndEvaluationWon extends GameEndEvaluationChain {
 
         @Override
         protected Dimension dimensionFor(int boardSize) {
-            return new Position.ColumnDimension(boardSize);
+            return new DimensionColumn(boardSize);
         }
     }
 
@@ -104,25 +110,8 @@ class GameEndEvaluationWon extends GameEndEvaluationChain {
 
         @Override
         protected Dimension dimensionFor(int boardSize) {
-            return new Position.RowDimension(boardSize);
+            return new DimensionRow(boardSize);
         }
     }
 
-    private static class BoardConditionWon implements GameEndCondition {
-
-        private final PositionCollection positionCollection;
-
-        public BoardConditionWon(PositionCollection positionCollection) {
-            this.positionCollection = positionCollection;
-        }
-
-        @Override
-        public TicTacToeState nextState(TicTacToeState ticTacToeState) {
-            return ticTacToeState.won();
-        }
-    }
-
-    interface Dimension extends Iterable<Range> {
-
-    }
 }

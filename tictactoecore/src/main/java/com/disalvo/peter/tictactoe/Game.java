@@ -1,5 +1,8 @@
 package com.disalvo.peter.tictactoe;
 
+import com.disalvo.peter.tictactoe.Mark;
+import com.disalvo.peter.tictactoe.Position;
+
 public interface Game {
     Game start();
 

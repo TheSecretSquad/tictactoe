@@ -1,4 +1,7 @@
-package com.disalvo.peter.tictactoe;
+package com.disalvo.peter.tictactoe.board;
+
+import com.disalvo.peter.tictactoe.Mark;
+import com.disalvo.peter.tictactoe.Position;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +11,7 @@ public class Board {
     private static final int DEFAULT_SIZE = 3;
 
     private final int size;
+    private final int numberOfSquares;
     private final Map<Position, Mark> positions;
 
     public Board() {
@@ -20,6 +24,7 @@ public class Board {
 
     private Board(int size, Map<Position, Mark> positions) {
         this.size = size;
+        this.numberOfSquares = size * size;
         this.positions = positions;
     }
 
@@ -34,7 +39,7 @@ public class Board {
     }
 
     public boolean isFilled() {
-        return positions.size() == size * size;
+        return positions.size() == numberOfSquares;
     }
 
     public boolean isPositionOccupiedByMark(Position position, Mark mark) {
@@ -51,14 +56,5 @@ public class Board {
 
     public <T> T evaluationResult(BoardEvaluation<T> evaluation, Mark mark) {
         return evaluation.result(this, mark, size);
-    }
-
-    interface BoardEvaluation<T> {
-
-        T result(Board board, Mark mark, int boardSize);
-    }
-
-    interface PositionCollection extends Iterable<Position> {
-
     }
 }

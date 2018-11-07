@@ -1,9 +1,16 @@
 package com.disalvo.peter.tictactoe;
 
-import static com.disalvo.peter.tictactoe.TicTacToeState.StateAnnouncer;
+import com.disalvo.peter.tictactoe.*;
+import com.disalvo.peter.tictactoe.board.Board;
+import com.disalvo.peter.tictactoe.gameEndEvaluation.BoardConditionNone;
+import com.disalvo.peter.tictactoe.gameEndEvaluation.GameEndEvaluationNone;
+import com.disalvo.peter.tictactoe.gameEndEvaluation.GameEndEvaluationStalemate;
+import com.disalvo.peter.tictactoe.gameEndEvaluation.GameEndEvaluationWon;
+import com.disalvo.peter.tictactoe.state.TicTacToeStateInitial;
+
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState;
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
-import static com.disalvo.peter.tictactoe.GameEndEvaluationNone.BoardConditionNone;
+import static com.disalvo.peter.tictactoe.TicTacToeState.StateAnnouncer;
 
 public class TicTacToe implements Game, StateAnnouncer {
     private static final Mark X = new Mark("x");

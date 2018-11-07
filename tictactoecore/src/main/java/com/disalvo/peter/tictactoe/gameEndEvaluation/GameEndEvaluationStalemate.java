@@ -1,7 +1,11 @@
-package com.disalvo.peter.tictactoe;
+package com.disalvo.peter.tictactoe.gameEndEvaluation;
+import com.disalvo.peter.tictactoe.Mark;
+import com.disalvo.peter.tictactoe.board.Board;
+import com.disalvo.peter.tictactoe.GameEndEvaluation;
+
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
 
-class GameEndEvaluationStalemate extends GameEndEvaluationChain {
+public class GameEndEvaluationStalemate extends GameEndEvaluationChain {
 
     public GameEndEvaluationStalemate(GameEndEvaluation evaluateIfNotPresent) {
         super(evaluateIfNotPresent);
@@ -12,10 +16,4 @@ class GameEndEvaluationStalemate extends GameEndEvaluationChain {
         return board.isFilled() ? new BoardConditionStalemate() : notPresentEvaluation.result();
     }
 
-    private static class BoardConditionStalemate implements GameEndCondition {
-        @Override
-        public TicTacToeState nextState(TicTacToeState ticTacToeState) {
-            return ticTacToeState.stalemate();
-        }
-    }
 }

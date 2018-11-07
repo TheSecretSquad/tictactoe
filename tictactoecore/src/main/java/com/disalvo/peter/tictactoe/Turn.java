@@ -1,6 +1,6 @@
 package com.disalvo.peter.tictactoe;
 
-class Turn {
+public class Turn {
     private final Mark current;
     private final Mark next;
 

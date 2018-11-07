@@ -1,4 +1,8 @@
-package com.disalvo.peter.tictactoe;
+package com.disalvo.peter.tictactoe.gameEndEvaluation;
+import com.disalvo.peter.tictactoe.Mark;
+import com.disalvo.peter.tictactoe.board.Board;
+import com.disalvo.peter.tictactoe.GameEndEvaluation;
+
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
 
 public class GameEndEvaluationNone implements GameEndEvaluation {
@@ -7,11 +11,4 @@ public class GameEndEvaluationNone implements GameEndEvaluation {
         return new BoardConditionNone();
     }
 
-    static class BoardConditionNone implements GameEndCondition {
-
-        @Override
-        public TicTacToeState nextState(TicTacToeState ticTacToeState) {
-            return ticTacToeState;
-        }
-    }
 }

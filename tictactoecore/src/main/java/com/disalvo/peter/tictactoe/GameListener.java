@@ -1,5 +1,7 @@
 package com.disalvo.peter.tictactoe;
 
+import com.disalvo.peter.tictactoe.Game;
+
 public interface GameListener {
     GameListener started(Game game);
 

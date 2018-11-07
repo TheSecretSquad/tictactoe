@@ -1,6 +1,11 @@
-package com.disalvo.peter.tictactoe;
+package com.disalvo.peter.tictactoe.state;
 
-class TicTacToeStateInitial implements TicTacToeState {
+import com.disalvo.peter.tictactoe.Mark;
+import com.disalvo.peter.tictactoe.Position;
+import com.disalvo.peter.tictactoe.TicTacToeState;
+import com.disalvo.peter.tictactoe.Turn;
+
+public class TicTacToeStateInitial implements TicTacToeState {
     @Override
     public TicTacToeState start() {
         return new TicTacToeStateStarted();

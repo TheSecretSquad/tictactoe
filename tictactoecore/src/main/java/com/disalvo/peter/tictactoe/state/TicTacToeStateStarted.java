@@ -1,8 +1,13 @@
-package com.disalvo.peter.tictactoe;
+package com.disalvo.peter.tictactoe.state;
 
-import static com.disalvo.peter.tictactoe.TicTacToeStateStopped.TicTacToeStateWon;
-import static com.disalvo.peter.tictactoe.TicTacToeStateStopped.TicTacToeStateStalemate;
-import static com.disalvo.peter.tictactoe.TicTacToeStateStopped.TicTacToeStateManualStop;
+import com.disalvo.peter.tictactoe.Mark;
+import com.disalvo.peter.tictactoe.Position;
+import com.disalvo.peter.tictactoe.TicTacToeState;
+import com.disalvo.peter.tictactoe.Turn;
+
+import static com.disalvo.peter.tictactoe.state.TicTacToeStateStopped.TicTacToeStateWon;
+import static com.disalvo.peter.tictactoe.state.TicTacToeStateStopped.TicTacToeStateStalemate;
+import static com.disalvo.peter.tictactoe.state.TicTacToeStateStopped.TicTacToeStateManualStop;
 
 class TicTacToeStateStarted implements TicTacToeState {
 

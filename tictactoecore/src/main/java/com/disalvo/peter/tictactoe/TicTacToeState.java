@@ -1,6 +1,6 @@
 package com.disalvo.peter.tictactoe;
 
-interface TicTacToeState {
+public interface TicTacToeState {
 
     TicTacToeState start();
 
@@ -17,7 +17,7 @@ interface TicTacToeState {
     TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position);
 
     interface PlayState {
-        TicTacToeState nextState(GameEndCondition boardCondition);
+        TicTacToeState nextState(GameEndCondition gameEndCondition);
 
         interface GameEndCondition {
 
