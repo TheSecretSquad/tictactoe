@@ -1,4 +1,4 @@
-package com.disalvo.peter.tictactoe.gameEndEvaluation;
+package com.disalvo.peter.tictactoe.evaluation;
 import com.disalvo.peter.tictactoe.Mark;
 import com.disalvo.peter.tictactoe.board.Board;
 import com.disalvo.peter.tictactoe.GameEndEvaluation;

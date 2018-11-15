@@ -1,12 +1,12 @@
-package com.disalvo.peter.tictactoe.gameEndEvaluation.rangeOffsetAndLength;
+package com.disalvo.peter.tictactoe.evaluation.range;
 
 import com.disalvo.peter.tictactoe.Position;
 
-class OffsetRange implements Position.Offset {
+public class Offset {
     private final int row;
     private final int column;
 
-    public OffsetRange(int row, int column) {
+    public Offset(int row, int column) {
         this.row = row;
         this.column = column;
     }

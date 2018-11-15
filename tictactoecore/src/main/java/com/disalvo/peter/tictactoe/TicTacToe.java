@@ -1,10 +1,10 @@
 package com.disalvo.peter.tictactoe;
 
 import com.disalvo.peter.tictactoe.board.Board;
-import com.disalvo.peter.tictactoe.gameEndEvaluation.BoardConditionNone;
-import com.disalvo.peter.tictactoe.gameEndEvaluation.GameEndEvaluationNone;
-import com.disalvo.peter.tictactoe.gameEndEvaluation.GameEndEvaluationStalemate;
-import com.disalvo.peter.tictactoe.gameEndEvaluation.GameEndEvaluationWon;
+import com.disalvo.peter.tictactoe.evaluation.BoardConditionNone;
+import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationNone;
+import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationStalemate;
+import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationWon;
 import com.disalvo.peter.tictactoe.state.TicTacToeStateInitial;
 
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState;

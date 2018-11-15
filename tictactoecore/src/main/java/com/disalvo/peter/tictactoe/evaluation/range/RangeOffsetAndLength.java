@@ -1,17 +1,17 @@
-package com.disalvo.peter.tictactoe.gameEndEvaluation.rangeOffsetAndLength;
+package com.disalvo.peter.tictactoe.evaluation.range;
 
 import com.disalvo.peter.tictactoe.Position;
-import com.disalvo.peter.tictactoe.gameEndEvaluation.Range;
+import com.disalvo.peter.tictactoe.evaluation.Range;
 
 import java.util.Iterator;
 
 public class RangeOffsetAndLength implements Range {
 
     private final Position from;
-    private final OffsetRange offset;
+    private final Offset offset;
     private final int length;
 
-    public RangeOffsetAndLength(Position from, OffsetRange offset, int length) {
+    public RangeOffsetAndLength(Position from, Offset offset, int length) {
         this.from = from;
         this.offset = offset;
         this.length = length;
@@ -31,7 +31,7 @@ public class RangeOffsetAndLength implements Range {
             @Override
             public Position next() {
                 Position next = currentPosition;
-                currentPosition = currentPosition.offsetBy(offset);
+                currentPosition = offset.apply(currentPosition);
                 ++currentIteration;
                 return next;
             }

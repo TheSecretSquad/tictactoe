@@ -33,15 +33,7 @@ public class Position {
                 '}';
     }
 
-    public Position offsetBy(Offset offset) {
-        return offset.apply(this);
-    }
-
     public Position offsetBy(int row, int column) {
         return new Position(this.row + row, this.column + column);
-    }
-
-    public interface Offset {
-        Position apply(Position position);
     }
 }

@@ -1,9 +1,10 @@
-package com.disalvo.peter.tictactoe.gameEndEvaluation;
+package com.disalvo.peter.tictactoe.evaluation;
 
 import com.disalvo.peter.tictactoe.board.PositionCollection;
 import com.disalvo.peter.tictactoe.TicTacToeState;
+import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
 
-class BoardConditionWon implements TicTacToeState.PlayState.GameEndCondition {
+class BoardConditionWon implements GameEndCondition {
 
     private final PositionCollection positionCollection;
 
