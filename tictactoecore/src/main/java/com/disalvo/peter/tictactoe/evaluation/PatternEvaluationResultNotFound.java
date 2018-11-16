@@ -1,6 +1,6 @@
 package com.disalvo.peter.tictactoe.evaluation;
 
-import com.disalvo.peter.tictactoe.TicTacToeState;
+import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
 
 class PatternEvaluationResultNotFound implements GameEndEvaluationWon.PatternEvaluationResult {
 
@@ -10,7 +10,7 @@ class PatternEvaluationResultNotFound implements GameEndEvaluationWon.PatternEva
     }
 
     @Override
-    public TicTacToeState.PlayState.GameEndCondition condition(GameEndEvaluationChain.NotPresentEvaluation notPresentEvaluation) {
+    public GameEndCondition condition(GameEndEvaluationChain.NotPresentEvaluation notPresentEvaluation) {
         return notPresentEvaluation.result();
     }
 }

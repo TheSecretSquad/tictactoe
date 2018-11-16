@@ -1,14 +1,13 @@
 package com.disalvo.peter.tictactoe.evaluation;
 
-import com.disalvo.peter.tictactoe.board.Board;
-import com.disalvo.peter.tictactoe.board.BoardEvaluation;
 import com.disalvo.peter.tictactoe.GameEndEvaluation;
 import com.disalvo.peter.tictactoe.Mark;
+import com.disalvo.peter.tictactoe.board.Board;
+import com.disalvo.peter.tictactoe.board.BoardEvaluation;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
 
