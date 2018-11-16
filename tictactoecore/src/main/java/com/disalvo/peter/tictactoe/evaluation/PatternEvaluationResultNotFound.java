@@ -1,8 +1,9 @@
 package com.disalvo.peter.tictactoe.evaluation;
 
 import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
+import static com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationWon.PatternEvaluationResult;
 
-class PatternEvaluationResultNotFound implements GameEndEvaluationWon.PatternEvaluationResult {
+class PatternEvaluationResultNotFound implements PatternEvaluationResult {
 
     @Override
     public boolean isFound() {

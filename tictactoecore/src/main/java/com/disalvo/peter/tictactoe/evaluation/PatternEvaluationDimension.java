@@ -3,8 +3,9 @@ package com.disalvo.peter.tictactoe.evaluation;
 import com.disalvo.peter.tictactoe.Mark;
 import com.disalvo.peter.tictactoe.board.Board;
 import static com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationWon.PatternEvaluationResult;
+import static com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationWon.PatternEvaluation;
 
-abstract class PatternEvaluationDimension implements GameEndEvaluationWon.PatternEvaluation {
+abstract class PatternEvaluationDimension implements PatternEvaluation {
 
     @Override
     public PatternEvaluationResult result(Board board, Mark mark, int boardSize) {
