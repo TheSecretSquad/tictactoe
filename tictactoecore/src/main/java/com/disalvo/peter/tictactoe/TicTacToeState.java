@@ -6,24 +6,11 @@ public interface TicTacToeState {
 
     TicTacToeState stop();
 
-    TicTacToeState won();
-
-    TicTacToeState stalemate();
-
     PlayState play();
 
     Turn nextTurn(Turn turn);
 
     TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position);
-
-    interface PlayState {
-        TicTacToeState nextState(GameEndCondition gameEndCondition);
-
-        interface GameEndCondition {
-
-            TicTacToeState nextState(TicTacToeState startingState);
-        }
-    }
 
     interface StateAnnouncer {
         StateAnnouncer continuePlay(Mark mark, Position position);

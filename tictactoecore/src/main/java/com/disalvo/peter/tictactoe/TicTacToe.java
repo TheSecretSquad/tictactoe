@@ -7,8 +7,7 @@ import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationStalemate;
 import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationWon;
 import com.disalvo.peter.tictactoe.state.TicTacToeStateInitial;
 
-import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState;
-import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
+import static com.disalvo.peter.tictactoe.PlayState.GameEndCondition;
 import static com.disalvo.peter.tictactoe.TicTacToeState.StateAnnouncer;
 
 public class TicTacToe implements Game, StateAnnouncer {

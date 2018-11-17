@@ -1,10 +1,7 @@
 package com.disalvo.peter.tictactoe.state;
 
-import com.disalvo.peter.tictactoe.Mark;
-import com.disalvo.peter.tictactoe.Position;
-import com.disalvo.peter.tictactoe.TicTacToeState;
-import com.disalvo.peter.tictactoe.Turn;
-// TODO: Revisit. Can probably throw exceptions for more of these methods as most are not used/under test
+import com.disalvo.peter.tictactoe.*;
+
 public class TicTacToeStateInitial implements TicTacToeState {
     @Override
     public TicTacToeState start() {
@@ -17,23 +14,13 @@ public class TicTacToeStateInitial implements TicTacToeState {
     }
 
     @Override
-    public TicTacToeState won() {
-        return stop();
-    }
-
-    @Override
-    public TicTacToeState stalemate() {
-        return stop();
-    }
-
-    @Override
     public PlayState play() {
         throw new GameExceptionNotStarted();
     }
 
     @Override
     public Turn nextTurn(Turn turn) {
-        return turn;
+        throw new GameExceptionNotStarted();
     }
 
     @Override
