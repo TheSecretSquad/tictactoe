@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
+import static com.disalvo.peter.tictactoe.PlayState.GameEndCondition;
 
 public class GameEndEvaluationWon extends GameEndEvaluationChain {
 

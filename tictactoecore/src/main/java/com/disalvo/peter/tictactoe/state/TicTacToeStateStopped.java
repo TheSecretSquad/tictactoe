@@ -1,11 +1,8 @@
 package com.disalvo.peter.tictactoe.state;
 
-import com.disalvo.peter.tictactoe.Mark;
-import com.disalvo.peter.tictactoe.Position;
-import com.disalvo.peter.tictactoe.TicTacToeState;
-import com.disalvo.peter.tictactoe.Turn;
+import com.disalvo.peter.tictactoe.*;
 
-abstract class TicTacToeStateStopped implements TicTacToeState {
+public abstract class TicTacToeStateStopped implements TicTacToeState {
 
     @Override
     public TicTacToeState start() {
@@ -16,14 +13,6 @@ abstract class TicTacToeStateStopped implements TicTacToeState {
     public TicTacToeState stop() {
         throw new GameExceptionAlreadyStopped();
     }
-
-    @Override
-    public TicTacToeState won() {
-        return stop();
-    }
-
-    @Override
-    public TicTacToeState stalemate() { return stop(); }
 
     @Override
     public PlayState play() { throw new GameExceptionAlreadyStopped(); }
@@ -41,24 +30,6 @@ abstract class TicTacToeStateStopped implements TicTacToeState {
         @Override
         public TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
             return stop();
-        }
-    }
-
-    static class TicTacToeStateWon extends TicTacToeStateStopped {
-
-        @Override
-        public TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
-            stateAnnouncer.winningPlay(mark, position);
-            return this;
-        }
-    }
-
-    static class TicTacToeStateStalemate extends TicTacToeStateStopped {
-
-        @Override
-        public TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
-            stateAnnouncer.stalemate(mark, position);
-            return this;
         }
     }
 }

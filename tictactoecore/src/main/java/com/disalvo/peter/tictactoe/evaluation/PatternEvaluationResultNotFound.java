@@ -1,6 +1,6 @@
 package com.disalvo.peter.tictactoe.evaluation;
 
-import static com.disalvo.peter.tictactoe.TicTacToeState.PlayState.GameEndCondition;
+import static com.disalvo.peter.tictactoe.PlayState.GameEndCondition;
 import static com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationWon.PatternEvaluationResult;
 
 class PatternEvaluationResultNotFound implements PatternEvaluationResult {

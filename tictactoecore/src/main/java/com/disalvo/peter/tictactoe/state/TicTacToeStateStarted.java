@@ -1,12 +1,6 @@
 package com.disalvo.peter.tictactoe.state;
 
-import com.disalvo.peter.tictactoe.Mark;
-import com.disalvo.peter.tictactoe.Position;
-import com.disalvo.peter.tictactoe.TicTacToeState;
-import com.disalvo.peter.tictactoe.Turn;
-
-import static com.disalvo.peter.tictactoe.state.TicTacToeStateStopped.TicTacToeStateWon;
-import static com.disalvo.peter.tictactoe.state.TicTacToeStateStopped.TicTacToeStateStalemate;
+import com.disalvo.peter.tictactoe.*;
 import static com.disalvo.peter.tictactoe.state.TicTacToeStateStopped.TicTacToeStateManualStop;
 
 class TicTacToeStateStarted implements TicTacToeState {
@@ -22,18 +16,8 @@ class TicTacToeStateStarted implements TicTacToeState {
     }
 
     @Override
-    public TicTacToeState won() {
-        return new TicTacToeStateWon();
-    }
-
-    @Override
-    public TicTacToeState stalemate() {
-        return new TicTacToeStateStalemate();
-    }
-
-    @Override
     public PlayState play() {
-        return new ProcessingPlayState(this);
+        return new Playing(this);
     }
 
     @Override
@@ -47,17 +31,17 @@ class TicTacToeStateStarted implements TicTacToeState {
         return this;
     }
 
-    private static class ProcessingPlayState implements PlayState {
+    private static class Playing implements PlayState {
 
-        private final TicTacToeState startingState;
+        private final TicTacToeState currentState;
 
-        public ProcessingPlayState(TicTacToeState startingState) {
-            this.startingState = startingState;
+        public Playing(TicTacToeState currentState) {
+            this.currentState = currentState;
         }
 
         @Override
         public TicTacToeState nextState(GameEndCondition gameEndCondition) {
-            return gameEndCondition.nextState(startingState);
+            return gameEndCondition.nextState(currentState);
         }
     }
 }
