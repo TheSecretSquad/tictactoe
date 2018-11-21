@@ -1,9 +1,9 @@
 package com.disalvo.peter.tictactoe.evaluation.dimension;
 
-import com.disalvo.peter.tictactoe.evaluation.range.RangeOffsetAndLengthColumn;
+import com.disalvo.peter.tictactoe.Position;
 import com.disalvo.peter.tictactoe.evaluation.Dimension;
 import com.disalvo.peter.tictactoe.evaluation.Range;
-import com.disalvo.peter.tictactoe.Position;
+import com.disalvo.peter.tictactoe.evaluation.range.RangeOffsetAndLengthColumn;
 
 import java.util.Iterator;
 

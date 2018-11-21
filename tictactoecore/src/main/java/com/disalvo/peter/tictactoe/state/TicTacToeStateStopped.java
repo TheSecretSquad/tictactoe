@@ -1,6 +1,8 @@
 package com.disalvo.peter.tictactoe.state;
 
-import com.disalvo.peter.tictactoe.*;
+import com.disalvo.peter.tictactoe.Mark;
+import com.disalvo.peter.tictactoe.Position;
+import com.disalvo.peter.tictactoe.TicTacToeState;
 
 public abstract class TicTacToeStateStopped implements TicTacToeState {
 
@@ -15,11 +17,8 @@ public abstract class TicTacToeStateStopped implements TicTacToeState {
     }
 
     @Override
-    public PlayState play() { throw new GameExceptionAlreadyStopped(); }
-
-    @Override
-    public Turn nextTurn(Turn turn) {
-        return turn;
+    public TicTacToeState ensureCanPlay() {
+        throw new GameExceptionAlreadyStopped();
     }
 
     @Override

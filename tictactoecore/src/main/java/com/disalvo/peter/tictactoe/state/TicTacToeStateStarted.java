@@ -1,6 +1,9 @@
 package com.disalvo.peter.tictactoe.state;
 
-import com.disalvo.peter.tictactoe.*;
+import com.disalvo.peter.tictactoe.Mark;
+import com.disalvo.peter.tictactoe.Position;
+import com.disalvo.peter.tictactoe.TicTacToeState;
+
 import static com.disalvo.peter.tictactoe.state.TicTacToeStateStopped.TicTacToeStateManualStop;
 
 class TicTacToeStateStarted implements TicTacToeState {
@@ -16,32 +19,13 @@ class TicTacToeStateStarted implements TicTacToeState {
     }
 
     @Override
-    public PlayState play() {
-        return new Playing(this);
-    }
-
-    @Override
-    public Turn nextTurn(Turn turn) {
-        return turn.next();
+    public TicTacToeState ensureCanPlay() {
+        return this;
     }
 
     @Override
     public TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
         stateAnnouncer.continuePlay(mark, position);
         return this;
-    }
-
-    private static class Playing implements PlayState {
-
-        private final TicTacToeState currentState;
-
-        public Playing(TicTacToeState currentState) {
-            this.currentState = currentState;
-        }
-
-        @Override
-        public TicTacToeState nextState(GameEndCondition gameEndCondition) {
-            return gameEndCondition.nextState(currentState);
-        }
     }
 }
