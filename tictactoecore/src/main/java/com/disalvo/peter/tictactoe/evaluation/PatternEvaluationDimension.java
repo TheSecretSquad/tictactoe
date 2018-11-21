@@ -1,6 +1,8 @@
 package com.disalvo.peter.tictactoe.evaluation;
 
+import com.disalvo.peter.tictactoe.Dimension;
 import com.disalvo.peter.tictactoe.Mark;
+import com.disalvo.peter.tictactoe.Range;
 import com.disalvo.peter.tictactoe.board.Board;
 
 import static com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationWon.PatternEvaluation;

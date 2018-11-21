@@ -1,4 +1,4 @@
-package com.disalvo.peter.tictactoe.evaluation;
+package com.disalvo.peter.tictactoe;
 
 public interface Dimension extends Iterable<Range> {
 

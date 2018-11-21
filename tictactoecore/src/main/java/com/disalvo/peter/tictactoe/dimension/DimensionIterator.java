@@ -1,6 +1,6 @@
-package com.disalvo.peter.tictactoe.evaluation.dimension;
+package com.disalvo.peter.tictactoe.dimension;
 
-import com.disalvo.peter.tictactoe.evaluation.Range;
+import com.disalvo.peter.tictactoe.Range;
 
 import java.util.Iterator;
 

@@ -1,4 +1,4 @@
-package com.disalvo.peter.tictactoe.evaluation;
+package com.disalvo.peter.tictactoe;
 
 import com.disalvo.peter.tictactoe.board.PositionCollection;
 

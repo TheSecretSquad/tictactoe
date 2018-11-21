@@ -1,7 +1,7 @@
-package com.disalvo.peter.tictactoe.evaluation.range;
+package com.disalvo.peter.tictactoe.range;
 
 import com.disalvo.peter.tictactoe.Position;
-import com.disalvo.peter.tictactoe.evaluation.Range;
+import com.disalvo.peter.tictactoe.Range;
 
 import java.util.Iterator;
 

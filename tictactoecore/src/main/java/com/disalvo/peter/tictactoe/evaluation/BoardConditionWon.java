@@ -1,9 +1,6 @@
 package com.disalvo.peter.tictactoe.evaluation;
 
-import com.disalvo.peter.tictactoe.GameEndCondition;
-import com.disalvo.peter.tictactoe.Mark;
-import com.disalvo.peter.tictactoe.Position;
-import com.disalvo.peter.tictactoe.TicTacToeState;
+import com.disalvo.peter.tictactoe.*;
 import com.disalvo.peter.tictactoe.board.PositionCollection;
 import com.disalvo.peter.tictactoe.state.TicTacToeStateStopped;
 
@@ -18,6 +15,11 @@ class BoardConditionWon implements GameEndCondition {
     @Override
     public TicTacToeState nextState(TicTacToeState currentState) {
         return new TicTacToeStateWon();
+    }
+
+    @Override
+    public GameEndCondition printOn(GameEndConditionMedia gameEndConditionMedia) {
+        return null;
     }
 
     static class TicTacToeStateWon extends TicTacToeStateStopped {

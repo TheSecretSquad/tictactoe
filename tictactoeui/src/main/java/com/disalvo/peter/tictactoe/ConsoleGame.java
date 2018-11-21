@@ -1,5 +1,4 @@
 package com.disalvo.peter.tictactoe;
-import static com.disalvo.peter.tictactoe.Game.GameMedia;
 
 public class ConsoleGame implements GameMedia, GameListener {
 

@@ -2,9 +2,10 @@ package com.disalvo.peter.tictactoe.evaluation;
 
 import com.disalvo.peter.tictactoe.Mark;
 import com.disalvo.peter.tictactoe.Position;
+import com.disalvo.peter.tictactoe.Range;
 import com.disalvo.peter.tictactoe.board.Board;
-import com.disalvo.peter.tictactoe.evaluation.range.Offset;
-import com.disalvo.peter.tictactoe.evaluation.range.RangeOffsetAndLength;
+import com.disalvo.peter.tictactoe.range.Offset;
+import com.disalvo.peter.tictactoe.range.RangeOffsetAndLength;
 
 import static com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationWon.PatternEvaluation;
 import static com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationWon.PatternEvaluationResult;

@@ -16,4 +16,8 @@ public class Turn {
     public boolean canPlay(Mark mark) {
         return this.current.equals(mark);
     }
+
+    public Turn printOn(TurnMedia turnMedia) {
+        return null;
+    }
 }

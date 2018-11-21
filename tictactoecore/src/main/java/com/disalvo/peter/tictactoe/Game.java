@@ -8,8 +8,4 @@ public interface Game {
     Game playMarkAtPosition(Mark mark, Position position);
 
     Game printOn(GameMedia gameMedia);
-
-    interface GameMedia {
-
-    }
 }

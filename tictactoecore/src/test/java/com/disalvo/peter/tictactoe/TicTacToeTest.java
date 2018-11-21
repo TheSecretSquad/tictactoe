@@ -1,6 +1,7 @@
 package com.disalvo.peter.tictactoe;
 
 import com.disalvo.peter.tictactoe.board.Board;
+import com.disalvo.peter.tictactoe.board.PositionCollection;
 import com.disalvo.peter.tictactoe.state.GameExceptionAlreadyStarted;
 import com.disalvo.peter.tictactoe.state.GameExceptionAlreadyStopped;
 import com.disalvo.peter.tictactoe.state.GameExceptionNotStarted;
@@ -11,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -272,5 +274,24 @@ public class TicTacToeTest
                 .playMarkAtPosition(new Mark("x"), new Position(4, 4));
 
         verify(gameListener).winningPlay(subject, new Mark("x"), new Position(4, 4));
+    }
+
+    @Test
+    public void printsRepresentation() {
+        TestGameMedia testGameMedia = new TestGameMedia();
+        aStartedGame()
+                .playMarkAtPosition(new Mark("x"), new Position(1, 3))
+                .playMarkAtPosition(new Mark("o"), new Position(1, 2))
+                .playMarkAtPosition(new Mark("x"), new Position(2, 2))
+                .playMarkAtPosition(new Mark("o"), new Position(1, 1))
+                .playMarkAtPosition(new Mark("x"), new Position(3, 1))
+                .printOn(testGameMedia);
+
+        assertTrue(testGameMedia.receivedMarkAtPosition(new Mark("x"), new Position(1, 3)));
+        assertTrue(testGameMedia.receivedMarkAtPosition(new Mark("o"), new Position(1, 2)));
+        assertTrue(testGameMedia.receivedMarkAtPosition(new Mark("x"), new Position(2, 2)));
+        assertTrue(testGameMedia.receivedMarkAtPosition(new Mark("o"), new Position(1, 1)));
+        assertTrue(testGameMedia.receivedMarkAtPosition(new Mark("x"), new Position(3, 1)));
+        assertTrue(testGAmeMedia.significantPositionsAre(new PositionCollection()))
     }
 }

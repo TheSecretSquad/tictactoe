@@ -2,6 +2,8 @@ package com.disalvo.peter.tictactoe.board;
 
 import com.disalvo.peter.tictactoe.Mark;
 import com.disalvo.peter.tictactoe.Position;
+import com.disalvo.peter.tictactoe.Range;
+import com.disalvo.peter.tictactoe.dimension.DimensionRows;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,10 +53,32 @@ public class Board {
     }
 
     public boolean isEmptyPosition(Position position) {
-        return !positions.containsKey(position);
+        return !isOccupied(position);
     }
 
     public <T> T evaluationResult(BoardEvaluation<T> evaluation, Mark mark) {
         return evaluation.result(this, mark, size);
+    }
+
+    public Board printOn(BoardMedia boardMedia) {
+        for(Range range : new DimensionRows(size)) {
+            for(Position position : range) {
+                printPositionOn(position, boardMedia);
+            }
+        }
+        return this;
+    }
+
+    private void printPositionOn(Position position, BoardMedia boardMedia) {
+        if(isOccupied(position)) {
+            boardMedia.printMarkAtPosition(markAtPosition(position), position);
+        }
+        else {
+            boardMedia.printEmptyPosition(position);
+        }
+    }
+
+    private boolean isOccupied(Position position) {
+        return positions.containsKey(position);
     }
 }

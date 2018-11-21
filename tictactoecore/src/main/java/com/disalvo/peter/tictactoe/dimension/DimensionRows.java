@@ -1,9 +1,9 @@
-package com.disalvo.peter.tictactoe.evaluation.dimension;
+package com.disalvo.peter.tictactoe.dimension;
 
 import com.disalvo.peter.tictactoe.Position;
-import com.disalvo.peter.tictactoe.evaluation.Dimension;
-import com.disalvo.peter.tictactoe.evaluation.Range;
-import com.disalvo.peter.tictactoe.evaluation.range.RangeOffsetAndLengthRow;
+import com.disalvo.peter.tictactoe.Dimension;
+import com.disalvo.peter.tictactoe.Range;
+import com.disalvo.peter.tictactoe.range.RangeOffsetAndLengthRow;
 
 import java.util.Iterator;
 
