@@ -6,9 +6,7 @@ public interface TicTacToeState {
 
     TicTacToeState stop();
 
-    PlayState play();
-
-    Turn nextTurn(Turn turn);
+    TicTacToeState ensureCanPlay();
 
     TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position);
 

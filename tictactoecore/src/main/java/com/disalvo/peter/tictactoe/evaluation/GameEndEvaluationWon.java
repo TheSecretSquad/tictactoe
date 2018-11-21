@@ -1,5 +1,6 @@
 package com.disalvo.peter.tictactoe.evaluation;
 
+import com.disalvo.peter.tictactoe.GameEndCondition;
 import com.disalvo.peter.tictactoe.GameEndEvaluation;
 import com.disalvo.peter.tictactoe.Mark;
 import com.disalvo.peter.tictactoe.board.Board;
@@ -8,8 +9,6 @@ import com.disalvo.peter.tictactoe.board.BoardEvaluation;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import static com.disalvo.peter.tictactoe.PlayState.GameEndCondition;
 
 public class GameEndEvaluationWon extends GameEndEvaluationChain {
 
@@ -28,7 +27,7 @@ public class GameEndEvaluationWon extends GameEndEvaluationChain {
         PatternEvaluationResult patternEvaluationResult = new PatternEvaluationResultNotFound();
         Iterator<PatternEvaluation> patternEvaluationIterator = patternEvaluations.iterator();
 
-        while(!patternEvaluationResult.isFound() && patternEvaluationIterator.hasNext()) {
+        while (!patternEvaluationResult.isFound() && patternEvaluationIterator.hasNext()) {
             PatternEvaluation patternEvaluation = patternEvaluationIterator.next();
             patternEvaluationResult = board.evaluationResult(patternEvaluation, mark);
         }

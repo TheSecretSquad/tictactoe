@@ -1,7 +1,8 @@
 package com.disalvo.peter.tictactoe.evaluation;
 
+import com.disalvo.peter.tictactoe.GameEndCondition;
 import com.disalvo.peter.tictactoe.board.PositionCollection;
-import static com.disalvo.peter.tictactoe.PlayState.GameEndCondition;
+
 import static com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationWon.PatternEvaluationResult;
 
 class PatternEvaluationResultFound implements PatternEvaluationResult {

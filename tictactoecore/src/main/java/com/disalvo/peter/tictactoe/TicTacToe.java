@@ -7,7 +7,6 @@ import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationStalemate;
 import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationWon;
 import com.disalvo.peter.tictactoe.state.TicTacToeStateInitial;
 
-import static com.disalvo.peter.tictactoe.PlayState.GameEndCondition;
 import static com.disalvo.peter.tictactoe.TicTacToeState.StateAnnouncer;
 
 public class TicTacToe implements Game, StateAnnouncer {
@@ -66,25 +65,24 @@ public class TicTacToe implements Game, StateAnnouncer {
 
     @Override
     public TicTacToe playMarkAtPosition(Mark mark, Position position) {
-        PlayState playState = state.play();
+        state.ensureCanPlay();
 
-        if(!turn.canPlay(mark)) {
+        if (!turn.canPlay(mark)) {
             listener.invalidMark(this, mark);
             return this;
         }
 
-        if(!board.isEmptyPosition(position)) {
+        if (!board.isEmptyPosition(position)) {
             listener.invalidPosition(this, position, mark);
             return this;
         }
 
         board = board.withMarkAtPosition(mark, position);
         endCondition = board.evaluationResult(endEvaluation, mark);
-        state = playState.nextState(endCondition);
-        turn = turn.next(state);
+        state = endCondition.nextState(state);
+        turn = turn.next();
         state.announceTo(this, mark, position);
         return this;
-
     }
 
     @Override

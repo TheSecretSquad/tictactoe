@@ -1,22 +1,18 @@
 package com.disalvo.peter.tictactoe;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import com.disalvo.peter.tictactoe.board.Board;
-import com.disalvo.peter.tictactoe.GameListener;
-import com.disalvo.peter.tictactoe.TicTacToe;
 import com.disalvo.peter.tictactoe.state.GameExceptionAlreadyStarted;
 import com.disalvo.peter.tictactoe.state.GameExceptionAlreadyStopped;
 import com.disalvo.peter.tictactoe.state.GameExceptionNotStarted;
 import com.disalvo.peter.tictactoe.state.GameExceptionRestartStopped;
-import com.disalvo.peter.tictactoe.Mark;
-import com.disalvo.peter.tictactoe.Position;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 @RunWith(MockitoJUnitRunner.class)
