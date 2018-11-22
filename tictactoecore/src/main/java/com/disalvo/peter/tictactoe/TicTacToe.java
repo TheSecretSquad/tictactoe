@@ -1,13 +1,13 @@
 package com.disalvo.peter.tictactoe;
 
 import com.disalvo.peter.tictactoe.board.Board;
-import com.disalvo.peter.tictactoe.evaluation.BoardConditionNone;
+import com.disalvo.peter.tictactoe.evaluation.GameEndConditionNone;
+import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationFilledBoard;
 import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationNone;
-import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationStalemate;
-import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationWon;
+import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationUniformDimension;
 import com.disalvo.peter.tictactoe.state.TicTacToeStateInitial;
 
-import static com.disalvo.peter.tictactoe.TicTacToeState.StateAnnouncer;
+import static com.disalvo.peter.tictactoe.GameEndCondition.StateAnnouncer;
 
 public class TicTacToe implements Game, StateAnnouncer {
     private static final Mark X = new Mark("x");
@@ -30,8 +30,8 @@ public class TicTacToe implements Game, StateAnnouncer {
                 new TicTacToeStateInitial(),
                 board,
                 new Turn(X, O),
-                new GameEndEvaluationWon(new GameEndEvaluationStalemate(new GameEndEvaluationNone())),
-                new BoardConditionNone()
+                new GameEndEvaluationUniformDimension(new GameEndEvaluationFilledBoard(new GameEndEvaluationNone())),
+                new GameEndConditionNone()
         );
     }
 
@@ -78,10 +78,10 @@ public class TicTacToe implements Game, StateAnnouncer {
         }
 
         board = board.withMarkAtPosition(mark, position);
-        endCondition = board.evaluationResult(endEvaluation, mark);
+        endCondition = endEvaluation.result(board, mark);
         state = endCondition.nextState(state);
-        turn = turn.next();
-        state.announceTo(this, mark, position);
+        turn = turn.next(state);
+        endCondition.announceTo(this, mark, position);
         return this;
     }
 

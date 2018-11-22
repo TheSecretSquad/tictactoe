@@ -1,12 +1,16 @@
 package com.disalvo.peter.tictactoe.board;
 
+import com.disalvo.peter.tictactoe.Dimension;
 import com.disalvo.peter.tictactoe.Mark;
 import com.disalvo.peter.tictactoe.Position;
 import com.disalvo.peter.tictactoe.Range;
+import com.disalvo.peter.tictactoe.dimension.DimensionColumns;
 import com.disalvo.peter.tictactoe.dimension.DimensionRows;
+import com.disalvo.peter.tictactoe.range.Offset;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 public class Board {
@@ -44,20 +48,16 @@ public class Board {
         return positions.size() == numberOfSquares;
     }
 
-    public boolean isPositionOccupiedByMark(Position position, Mark mark) {
+    private boolean isPositionOccupiedByMark(Position position, Mark mark) {
         return mark.equals(markAtPosition(position));
     }
 
-    public boolean arePositionsOccupiedByMark(PositionCollection positionCollection, Mark mark) {
+    private boolean arePositionsOccupiedByMark(PositionCollection positionCollection, Mark mark) {
         return StreamSupport.stream(positionCollection.spliterator(), true).allMatch(p -> isPositionOccupiedByMark(p, mark));
     }
 
     public boolean isEmptyPosition(Position position) {
         return !isOccupied(position);
-    }
-
-    public <T> T evaluationResult(BoardEvaluation<T> evaluation, Mark mark) {
-        return evaluation.result(this, mark, size);
     }
 
     public Board printOn(BoardMedia boardMedia) {
@@ -80,5 +80,50 @@ public class Board {
 
     private boolean isOccupied(Position position) {
         return positions.containsKey(position);
+    }
+
+    private Position topLeft() {
+        return new Position(1, 1);
+    }
+
+    private Position topRight() {
+        return new Position(1, size);
+    }
+
+    private Range range(Position from, Offset offset) {
+        return from.range(offset, size);
+    }
+
+    public Optional<Range> diagonalRangeFilledWithMark(Mark mark) {
+        Range topLeftToBottomRight = range(topLeft(), new Offset(1, 1));
+        Range topRightToBottomLeft = range(topRight(), new Offset(1, -1));
+
+        if (arePositionsOccupiedByMark(topLeftToBottomRight, mark)) {
+            return Optional.of(topLeftToBottomRight);
+        }
+
+        if (arePositionsOccupiedByMark(topRightToBottomLeft, mark)) {
+            return Optional.of(topRightToBottomLeft);
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<Range> rowRangeFilledWithMark(Mark mark) {
+        return rangeFilledWithMarkInDimension(mark, new DimensionRows(size));
+    }
+
+    public Optional<Range> columnRangeFilledWithMark(Mark mark) {
+        return rangeFilledWithMarkInDimension(mark, new DimensionColumns(size));
+    }
+
+    private Optional<Range> rangeFilledWithMarkInDimension(Mark mark, Dimension dimension) {
+        for(Range range : dimension) {
+            if(arePositionsOccupiedByMark(range, mark)) {
+                return Optional.of(range);
+            }
+        }
+
+        return Optional.empty();
     }
 }

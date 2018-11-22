@@ -7,8 +7,8 @@ import com.disalvo.peter.tictactoe.board.Board;
 
 public class GameEndEvaluationNone implements GameEndEvaluation {
     @Override
-    public GameEndCondition result(Board board, Mark mark, int boardSize) {
-        return new BoardConditionNone();
+    public GameEndCondition result(Board board, Mark mark) {
+        return new GameEndConditionNone();
     }
 
 }

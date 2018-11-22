@@ -6,25 +6,25 @@ import java.util.Iterator;
 
 abstract class DimensionIterator implements Iterator<Range> {
 
-    private final int maxDimension;
-    private int currentDimension;
+    private final int size;
+    private int currentRange;
 
-    public DimensionIterator(int maxDimension) {
-        this.maxDimension = maxDimension;
-        this.currentDimension = 1;
+    public DimensionIterator(int size) {
+        this.size = size;
+        this.currentRange = 1;
     }
 
     @Override
     public boolean hasNext() {
-        return currentDimension <= maxDimension;
+        return currentRange <= size;
     }
 
     @Override
     public Range next() {
-        Range next = range(currentDimension, maxDimension);
-        ++currentDimension;
+        Range next = range(currentRange, size);
+        ++currentRange;
         return next;
     }
 
-    protected abstract Range range(int currentDimension, int maxDimension);
+    protected abstract Range range(int currentRange, int dimensionSize);
 }

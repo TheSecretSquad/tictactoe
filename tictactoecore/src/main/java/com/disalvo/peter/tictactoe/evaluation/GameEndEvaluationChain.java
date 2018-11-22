@@ -14,11 +14,11 @@ abstract class GameEndEvaluationChain implements GameEndEvaluation {
     }
 
     @Override
-    public GameEndCondition result(Board board, Mark mark, int boardSize) {
-        return result(board, mark, boardSize, () -> board.evaluationResult(evaluationIfNotPresent, mark));
+    public GameEndCondition result(Board board, Mark mark) {
+        return result(board, mark, () -> evaluationIfNotPresent.result(board, mark));
     }
 
-    protected abstract GameEndCondition result(Board board, Mark mark, int boardSize, NotPresentEvaluation notPresentEvaluation);
+    protected abstract GameEndCondition result(Board board, Mark mark, NotPresentEvaluation notPresentEvaluation);
 
     @FunctionalInterface
     interface NotPresentEvaluation {

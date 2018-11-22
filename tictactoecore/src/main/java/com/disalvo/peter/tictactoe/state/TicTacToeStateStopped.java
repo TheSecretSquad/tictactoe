@@ -1,10 +1,9 @@
 package com.disalvo.peter.tictactoe.state;
 
-import com.disalvo.peter.tictactoe.Mark;
-import com.disalvo.peter.tictactoe.Position;
 import com.disalvo.peter.tictactoe.TicTacToeState;
+import com.disalvo.peter.tictactoe.Turn;
 
-public abstract class TicTacToeStateStopped implements TicTacToeState {
+public class TicTacToeStateStopped implements TicTacToeState {
 
     @Override
     public TicTacToeState start() {
@@ -22,13 +21,7 @@ public abstract class TicTacToeStateStopped implements TicTacToeState {
     }
 
     @Override
-    public abstract TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position);
-
-    static class TicTacToeStateManualStop extends TicTacToeStateStopped {
-
-        @Override
-        public TicTacToeState announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
-            return stop();
-        }
+    public Turn nextTurn(Turn turn) {
+        return turn;
     }
 }
