@@ -12,18 +12,23 @@ class GameEndConditionWon implements GameEndCondition {
     }
 
     @Override
-    public TicTacToeState nextState(TicTacToeState currentState) {
-        return currentState.stop();
-    }
-
-    @Override
-    public GameEndCondition announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
-        stateAnnouncer.winningPlay(mark, position);
+    public GameEndCondition announceTo(ConditionAnnouncer conditionAnnouncer) {
+        conditionAnnouncer.winningPlay();
         return this;
     }
 
     @Override
     public GameEndCondition printOn(GameEndConditionMedia gameEndConditionMedia) {
         return null;
+    }
+
+    @Override
+    public Turn next(Turn turn) {
+        return turn;
+    }
+
+    @Override
+    public TicTacToeState next(TicTacToeState state) {
+        return state.stop();
     }
 }

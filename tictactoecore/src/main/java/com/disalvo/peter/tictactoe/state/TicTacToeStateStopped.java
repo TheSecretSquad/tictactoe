@@ -1,7 +1,6 @@
 package com.disalvo.peter.tictactoe.state;
 
 import com.disalvo.peter.tictactoe.TicTacToeState;
-import com.disalvo.peter.tictactoe.Turn;
 
 public class TicTacToeStateStopped implements TicTacToeState {
 
@@ -21,7 +20,7 @@ public class TicTacToeStateStopped implements TicTacToeState {
     }
 
     @Override
-    public Turn nextTurn(Turn turn) {
-        return turn;
+    public TicTacToeState next(DecidesNextState decidesNextState) {
+        throw new GameExceptionAlreadyStopped();
     }
 }

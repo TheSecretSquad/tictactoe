@@ -7,9 +7,9 @@ import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationNone;
 import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationUniformDimension;
 import com.disalvo.peter.tictactoe.state.TicTacToeStateInitial;
 
-import static com.disalvo.peter.tictactoe.GameEndCondition.StateAnnouncer;
+import static com.disalvo.peter.tictactoe.GameEndCondition.ConditionAnnouncer;
 
-public class TicTacToe implements Game, StateAnnouncer {
+public class TicTacToe implements Game {
     private static final Mark X = new Mark("x");
     private static final Mark O = new Mark("o");
 
@@ -79,10 +79,14 @@ public class TicTacToe implements Game, StateAnnouncer {
 
         board = board.withMarkAtPosition(mark, position);
         endCondition = endEvaluation.result(board, mark);
-        state = endCondition.nextState(state);
-        turn = turn.next(state);
-        endCondition.announceTo(this, mark, position);
+        state = state.next(endCondition);
+        turn = turn.next(endCondition);
+        endCondition.announceTo(conditionAnnouncerForPlay(mark, position));
         return this;
+    }
+
+    private TicTacToeConditionAnnouncer conditionAnnouncerForPlay(Mark mark, Position position) {
+        return new TicTacToeConditionAnnouncer(this, listener, mark, position);
     }
 
     @Override
@@ -93,21 +97,37 @@ public class TicTacToe implements Game, StateAnnouncer {
         return this;
     }
 
-    @Override
-    public StateAnnouncer continuePlay(Mark mark, Position position) {
-        listener.continuePlay(this, mark, position);
-        return this;
-    }
+    private static class TicTacToeConditionAnnouncer implements ConditionAnnouncer {
 
-    @Override
-    public StateAnnouncer winningPlay(Mark mark, Position position) {
-        listener.winningPlay(this, mark, position);
-        return this;
-    }
+        private final Game game;
+        private final GameListener gameListener;
+        private final Mark mark;
+        private final Position position;
 
-    @Override
-    public StateAnnouncer stalemate(Mark mark, Position position) {
-        listener.stalemate(this, mark, position);
-        return this;
+        public TicTacToeConditionAnnouncer(Game game, GameListener gameListener, Mark mark, Position Position) {
+
+            this.game = game;
+            this.gameListener = gameListener;
+            this.mark = mark;
+            position = Position;
+        }
+
+        @Override
+        public ConditionAnnouncer continuePlay() {
+            gameListener.continuePlay(game, mark, position);
+            return this;
+        }
+
+        @Override
+        public ConditionAnnouncer winningPlay() {
+            gameListener.winningPlay(game, mark, position);
+            return this;
+        }
+
+        @Override
+        public ConditionAnnouncer stalemate() {
+            gameListener.stalemate(game, mark, position);
+            return this;
+        }
     }
 }

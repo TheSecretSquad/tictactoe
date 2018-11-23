@@ -20,7 +20,7 @@ public class TicTacToeStateInitial implements TicTacToeState {
     }
 
     @Override
-    public Turn nextTurn(Turn turn) {
+    public TicTacToeState next(DecidesNextState decidesNextState) {
         throw new GameExceptionNotStarted();
     }
 }

@@ -9,8 +9,8 @@ public class Turn {
         this.next = next;
     }
 
-    public Turn next(TicTacToeState state) {
-        return state.nextTurn(this);
+    public Turn next(DecidesNextTurn decidesNextTurn) {
+        return decidesNextTurn.next(this);
     }
 
     public Turn next() {
@@ -23,5 +23,9 @@ public class Turn {
 
     public Turn printOn(TurnMedia turnMedia) {
         return null;
+    }
+
+    interface DecidesNextTurn {
+        Turn next(Turn turn);
     }
 }

@@ -1,18 +1,18 @@
 package com.disalvo.peter.tictactoe;
+import static com.disalvo.peter.tictactoe.Turn.DecidesNextTurn;
+import static com.disalvo.peter.tictactoe.TicTacToeState.DecidesNextState;
 
-public interface GameEndCondition {
+public interface GameEndCondition extends DecidesNextTurn, DecidesNextState {
 
-    TicTacToeState nextState(TicTacToeState currentState);
-
-    GameEndCondition announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position);
+    GameEndCondition announceTo(ConditionAnnouncer conditionAnnouncer);
 
     GameEndCondition printOn(GameEndConditionMedia gameEndConditionMedia);
 
-    interface StateAnnouncer {
-        StateAnnouncer continuePlay(Mark mark, Position position);
+    interface ConditionAnnouncer {
+        ConditionAnnouncer continuePlay();
 
-        StateAnnouncer winningPlay(Mark mark, Position position);
+        ConditionAnnouncer winningPlay();
 
-        StateAnnouncer stalemate(Mark mark, Position position);
+        ConditionAnnouncer stalemate();
     }
 }

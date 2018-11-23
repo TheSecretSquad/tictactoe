@@ -5,18 +5,23 @@ import com.disalvo.peter.tictactoe.*;
 public class GameEndConditionNone implements GameEndCondition {
 
     @Override
-    public TicTacToeState nextState(TicTacToeState currentState) {
-        return currentState;
-    }
-
-    @Override
-    public GameEndCondition announceTo(StateAnnouncer stateAnnouncer, Mark mark, Position position) {
-        stateAnnouncer.continuePlay(mark, position);
+    public GameEndCondition announceTo(ConditionAnnouncer conditionAnnouncer) {
+        conditionAnnouncer.continuePlay();
         return this;
     }
 
     @Override
     public GameEndCondition printOn(GameEndConditionMedia gameEndConditionMedia) {
         return null;
+    }
+
+    @Override
+    public Turn next(Turn turn) {
+        return turn.next();
+    }
+
+    @Override
+    public TicTacToeState next(TicTacToeState state) {
+        return state;
     }
 }
