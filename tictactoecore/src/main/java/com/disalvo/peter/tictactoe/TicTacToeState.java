@@ -8,9 +8,5 @@ public interface TicTacToeState {
 
     TicTacToeState ensureCanPlay();
 
-    TicTacToeState next(DecidesNextState decidesNextState);
-
-    interface DecidesNextState {
-        TicTacToeState next(TicTacToeState state);
-    }
+    TicTacToeState next(GameEndCondition endCondition);
 }

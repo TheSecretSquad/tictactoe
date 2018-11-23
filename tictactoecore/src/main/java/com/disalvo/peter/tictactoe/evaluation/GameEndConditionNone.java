@@ -16,12 +16,12 @@ public class GameEndConditionNone implements GameEndCondition {
     }
 
     @Override
-    public Turn next(Turn turn) {
-        return turn.next();
+    public TicTacToeState next(TicTacToeState ticTacToeState) {
+        return ticTacToeState;
     }
 
     @Override
-    public TicTacToeState next(TicTacToeState state) {
-        return state;
+    public Turn next(Turn turn) {
+        return turn.next();
     }
 }

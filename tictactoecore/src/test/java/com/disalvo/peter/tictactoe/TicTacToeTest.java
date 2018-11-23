@@ -1,7 +1,6 @@
 package com.disalvo.peter.tictactoe;
 
 import com.disalvo.peter.tictactoe.board.Board;
-import com.disalvo.peter.tictactoe.board.PositionCollection;
 import com.disalvo.peter.tictactoe.state.GameExceptionAlreadyStarted;
 import com.disalvo.peter.tictactoe.state.GameExceptionAlreadyStopped;
 import com.disalvo.peter.tictactoe.state.GameExceptionNotStarted;

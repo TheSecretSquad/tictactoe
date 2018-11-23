@@ -9,10 +9,6 @@ public class Turn {
         this.next = next;
     }
 
-    public Turn next(DecidesNextTurn decidesNextTurn) {
-        return decidesNextTurn.next(this);
-    }
-
     public Turn next() {
         return new Turn(next, current);
     }
@@ -25,7 +21,7 @@ public class Turn {
         return null;
     }
 
-    interface DecidesNextTurn {
-        Turn next(Turn turn);
+    public Turn next(GameEndCondition endCondition) {
+        return endCondition.next(this);
     }
 }

@@ -23,12 +23,12 @@ class GameEndConditionWon implements GameEndCondition {
     }
 
     @Override
-    public Turn next(Turn turn) {
-        return turn;
+    public TicTacToeState next(TicTacToeState ticTacToeState) {
+        return ticTacToeState.stop();
     }
 
     @Override
-    public TicTacToeState next(TicTacToeState state) {
-        return state.stop();
+    public Turn next(Turn turn) {
+        return turn;
     }
 }
