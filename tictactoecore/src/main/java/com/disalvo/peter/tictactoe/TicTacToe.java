@@ -6,8 +6,6 @@ import com.disalvo.peter.tictactoe.evaluation.BoardEvaluationNone;
 import com.disalvo.peter.tictactoe.evaluation.BoardEvaluationUniformDimension;
 import com.disalvo.peter.tictactoe.state.TicTacToeStateInitial;
 
-import static com.disalvo.peter.tictactoe.BoardCondition.ConditionAnnouncer;
-
 public class TicTacToe implements Game {
     private static final Mark X = new Mark("x");
     private static final Mark O = new Mark("o");
@@ -96,37 +94,4 @@ public class TicTacToe implements Game {
         return this;
     }
 
-    private static class TicTacToeConditionAnnouncer implements ConditionAnnouncer {
-
-        private final Game game;
-        private final GameListener gameListener;
-        private final Mark mark;
-        private final Position position;
-
-        public TicTacToeConditionAnnouncer(Game game, GameListener gameListener, Mark mark, Position Position) {
-
-            this.game = game;
-            this.gameListener = gameListener;
-            this.mark = mark;
-            position = Position;
-        }
-
-        @Override
-        public ConditionAnnouncer continuePlay() {
-            gameListener.continuePlay(game, mark, position);
-            return this;
-        }
-
-        @Override
-        public ConditionAnnouncer winningPlay() {
-            gameListener.winningPlay(game, mark, position);
-            return this;
-        }
-
-        @Override
-        public ConditionAnnouncer stalemate() {
-            gameListener.stalemate(game, mark, position);
-            return this;
-        }
-    }
 }
