@@ -1,20 +1,16 @@
-package com.disalvo.peter.tictactoe.board;
+package com.disalvo.peter.tictactoe;
 
-import com.disalvo.peter.tictactoe.Dimension;
-import com.disalvo.peter.tictactoe.Mark;
-import com.disalvo.peter.tictactoe.Position;
-import com.disalvo.peter.tictactoe.Range;
-import com.disalvo.peter.tictactoe.dimension.DimensionColumns;
-import com.disalvo.peter.tictactoe.dimension.DimensionRows;
-import com.disalvo.peter.tictactoe.range.Offset;
+import com.disalvo.peter.tictactoe.positionCollectionGroups.Columns;
+import com.disalvo.peter.tictactoe.positionCollectionGroups.Diagonals;
+import com.disalvo.peter.tictactoe.positionCollectionGroups.Rows;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 public class Board {
     private static final int DEFAULT_SIZE = 3;
+    private static final int MINIMUM_POSITION_VALUE = 1;
 
     private final int size;
     private final int numberOfSquares;
@@ -61,8 +57,8 @@ public class Board {
     }
 
     public Board printOn(BoardMedia boardMedia) {
-        for(Range range : new DimensionRows(size)) {
-            for(Position position : range) {
+        for (PositionCollection range : new Rows(1, size)) {
+            for (Position position : range) {
                 printPositionOn(position, boardMedia);
             }
         }
@@ -70,10 +66,9 @@ public class Board {
     }
 
     private void printPositionOn(Position position, BoardMedia boardMedia) {
-        if(isOccupied(position)) {
+        if (isOccupied(position)) {
             boardMedia.printMarkAtPosition(markAtPosition(position), position);
-        }
-        else {
+        } else {
             boardMedia.printEmptyPosition(position);
         }
     }
@@ -82,48 +77,40 @@ public class Board {
         return positions.containsKey(position);
     }
 
-    private Position topLeft() {
-        return new Position(1, 1);
+    public PositionCollectionGroup rows() {
+        return new Rows(MINIMUM_POSITION_VALUE, size);
     }
 
-    private Position topRight() {
-        return new Position(1, size);
+    public PositionCollectionGroup columns() {
+        return new Columns(MINIMUM_POSITION_VALUE, size);
     }
 
-    private Range range(Position from, Offset offset) {
-        return from.range(offset, size);
+    public PositionCollectionGroup diagonals() {
+        return new Diagonals(MINIMUM_POSITION_VALUE, size);
     }
 
-    public Optional<Range> diagonalRangeFilledWithMark(Mark mark) {
-        Range topLeftToBottomRight = range(topLeft(), new Offset(1, 1));
-        Range topRightToBottomLeft = range(topRight(), new Offset(1, -1));
+    public <T> T positionCollectionFilledWithMark(
+            PositionCollectionGroup positionCollectionGroup,
+            Mark mark,
+            OnPositionCollectionNotFound<T> onNotFound,
+            OnPositionCollectionFound<T> onFound) {
 
-        if (arePositionsOccupiedByMark(topLeftToBottomRight, mark)) {
-            return Optional.of(topLeftToBottomRight);
-        }
-
-        if (arePositionsOccupiedByMark(topRightToBottomLeft, mark)) {
-            return Optional.of(topRightToBottomLeft);
-        }
-
-        return Optional.empty();
-    }
-
-    public Optional<Range> rowRangeFilledWithMark(Mark mark) {
-        return rangeFilledWithMarkInDimension(mark, new DimensionRows(size));
-    }
-
-    public Optional<Range> columnRangeFilledWithMark(Mark mark) {
-        return rangeFilledWithMarkInDimension(mark, new DimensionColumns(size));
-    }
-
-    private Optional<Range> rangeFilledWithMarkInDimension(Mark mark, Dimension dimension) {
-        for(Range range : dimension) {
-            if(arePositionsOccupiedByMark(range, mark)) {
-                return Optional.of(range);
+        for (PositionCollection positionCollection : positionCollectionGroup) {
+            if (arePositionsOccupiedByMark(positionCollection, mark)) {
+                return onFound.found(positionCollection);
             }
         }
 
-        return Optional.empty();
+        return onNotFound.notFound();
+    }
+
+    @FunctionalInterface
+    public interface OnPositionCollectionNotFound<T> {
+        T notFound();
+    }
+
+    @FunctionalInterface
+    public interface OnPositionCollectionFound<T> {
+        T found(PositionCollection range);
     }
 }

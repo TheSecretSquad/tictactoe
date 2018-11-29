@@ -1,8 +1,5 @@
 package com.disalvo.peter.tictactoe;
 
-import com.disalvo.peter.tictactoe.board.BoardMedia;
-import com.disalvo.peter.tictactoe.board.PositionCollection;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +22,7 @@ public class TestGameMedia implements GameMedia {
     }
 
     @Override
-    public GameEndConditionMedia printSignificantPositions(PositionCollection positionCollection) {
+    public BoardConditionMedia printSignificantPositions(PositionCollection positionCollection) {
         return null;
     }
 

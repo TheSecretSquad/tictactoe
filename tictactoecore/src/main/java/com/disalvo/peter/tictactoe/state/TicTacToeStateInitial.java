@@ -1,6 +1,6 @@
 package com.disalvo.peter.tictactoe.state;
 
-import com.disalvo.peter.tictactoe.GameEndCondition;
+import com.disalvo.peter.tictactoe.BoardCondition;
 import com.disalvo.peter.tictactoe.TicTacToeState;
 
 public class TicTacToeStateInitial implements TicTacToeState {
@@ -20,7 +20,7 @@ public class TicTacToeStateInitial implements TicTacToeState {
     }
 
     @Override
-    public TicTacToeState next(GameEndCondition endCondition) {
+    public TicTacToeState next(BoardCondition endCondition) {
         throw new GameExceptionNotStarted();
     }
 }

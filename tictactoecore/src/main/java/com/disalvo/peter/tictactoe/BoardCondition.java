@@ -1,10 +1,10 @@
 package com.disalvo.peter.tictactoe;
 
-public interface GameEndCondition {
+public interface BoardCondition {
 
-    GameEndCondition announceTo(ConditionAnnouncer conditionAnnouncer);
+    BoardCondition announceTo(ConditionAnnouncer conditionAnnouncer);
 
-    GameEndCondition printOn(GameEndConditionMedia gameEndConditionMedia);
+    BoardCondition printOn(BoardConditionMedia boardConditionMedia);
 
     TicTacToeState next(TicTacToeState current);
 

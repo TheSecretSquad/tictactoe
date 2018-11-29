@@ -1,11 +1,11 @@
 package com.disalvo.peter.tictactoe.range;
 
 import com.disalvo.peter.tictactoe.Position;
-import com.disalvo.peter.tictactoe.Range;
+import com.disalvo.peter.tictactoe.PositionCollection;
 
 import java.util.Iterator;
 
-public class RangeOffsetAndLength implements Range {
+public class RangeOffsetAndLength implements PositionCollection {
 
     private final Position from;
     private final Offset offset;

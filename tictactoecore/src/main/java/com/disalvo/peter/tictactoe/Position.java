@@ -1,8 +1,5 @@
 package com.disalvo.peter.tictactoe;
 
-import com.disalvo.peter.tictactoe.range.Offset;
-import com.disalvo.peter.tictactoe.range.RangeOffsetAndLength;
-
 import java.util.Objects;
 
 public class Position {
@@ -38,9 +35,5 @@ public class Position {
 
     public Position offsetBy(int row, int column) {
         return new Position(this.row + row, this.column + column);
-    }
-
-    public Range range(Offset offset, int length) {
-        return new RangeOffsetAndLength(this, offset, length);
     }
 }

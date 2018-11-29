@@ -1,8 +1,5 @@
 package com.disalvo.peter.tictactoe;
 
-import com.disalvo.peter.tictactoe.board.BoardMedia;
-import com.disalvo.peter.tictactoe.board.PositionCollection;
-
 public class ConsoleGame implements GameMedia, GameListener {
 
     private final Game game;
@@ -54,7 +51,7 @@ public class ConsoleGame implements GameMedia, GameListener {
     }
 
     @Override
-    public GameEndConditionMedia printSignificantPositions(PositionCollection positionCollection) {
+    public BoardConditionMedia printSignificantPositions(PositionCollection positionCollection) {
         return null;
     }
 

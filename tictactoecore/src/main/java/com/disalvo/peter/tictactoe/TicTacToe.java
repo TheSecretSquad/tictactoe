@@ -1,24 +1,23 @@
 package com.disalvo.peter.tictactoe;
 
-import com.disalvo.peter.tictactoe.board.Board;
-import com.disalvo.peter.tictactoe.evaluation.GameEndConditionNone;
-import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationFilledBoard;
-import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationNone;
-import com.disalvo.peter.tictactoe.evaluation.GameEndEvaluationUniformDimension;
+import com.disalvo.peter.tictactoe.evaluation.BoardConditionNone;
+import com.disalvo.peter.tictactoe.evaluation.BoardEvaluationFilled;
+import com.disalvo.peter.tictactoe.evaluation.BoardEvaluationNone;
+import com.disalvo.peter.tictactoe.evaluation.BoardEvaluationUniformDimension;
 import com.disalvo.peter.tictactoe.state.TicTacToeStateInitial;
 
-import static com.disalvo.peter.tictactoe.GameEndCondition.ConditionAnnouncer;
+import static com.disalvo.peter.tictactoe.BoardCondition.ConditionAnnouncer;
 
 public class TicTacToe implements Game {
     private static final Mark X = new Mark("x");
     private static final Mark O = new Mark("o");
 
     private final GameListener listener;
-    private final GameEndEvaluation endEvaluation;
+    private final BoardEvaluation endEvaluation;
     private TicTacToeState state;
     private Board board;
     private Turn turn;
-    private GameEndCondition endCondition;
+    private BoardCondition endCondition;
 
     public TicTacToe(GameListener listener) {
         this(listener, new Board());
@@ -30,8 +29,8 @@ public class TicTacToe implements Game {
                 new TicTacToeStateInitial(),
                 board,
                 new Turn(X, O),
-                new GameEndEvaluationUniformDimension(new GameEndEvaluationFilledBoard(new GameEndEvaluationNone())),
-                new GameEndConditionNone()
+                new BoardEvaluationUniformDimension(new BoardEvaluationFilled(new BoardEvaluationNone())),
+                new BoardConditionNone()
         );
     }
 
@@ -39,8 +38,8 @@ public class TicTacToe implements Game {
                       TicTacToeState state,
                       Board board,
                       Turn turn,
-                      GameEndEvaluation endEvaluation,
-                      GameEndCondition endCondition) {
+                      BoardEvaluation endEvaluation,
+                      BoardCondition endCondition) {
         this.listener = listener;
         this.state = state;
         this.board = board;
