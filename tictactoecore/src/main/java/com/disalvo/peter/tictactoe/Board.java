@@ -56,23 +56,6 @@ public class Board {
         return !isOccupied(position);
     }
 
-    public Board printOn(BoardMedia boardMedia) {
-        for (PositionCollection range : new Rows(1, size)) {
-            for (Position position : range) {
-                printPositionOn(position, boardMedia);
-            }
-        }
-        return this;
-    }
-
-    private void printPositionOn(Position position, BoardMedia boardMedia) {
-        if (isOccupied(position)) {
-            boardMedia.printMarkAtPosition(markAtPosition(position), position);
-        } else {
-            boardMedia.printEmptyPosition(position);
-        }
-    }
-
     private boolean isOccupied(Position position) {
         return positions.containsKey(position);
     }
@@ -112,5 +95,22 @@ public class Board {
     @FunctionalInterface
     public interface OnPositionCollectionFound<T> {
         T found(PositionCollection range);
+    }
+
+    public Board printOn(BoardMedia boardMedia) {
+        for (PositionCollection range : new Rows(1, size)) {
+            for (Position position : range) {
+                printPositionOn(position, boardMedia);
+            }
+        }
+        return this;
+    }
+
+    private void printPositionOn(Position position, BoardMedia boardMedia) {
+        if (isOccupied(position)) {
+            boardMedia.printMarkAtPosition(markAtPosition(position), position);
+        } else {
+            boardMedia.printEmptyPosition(position);
+        }
     }
 }
