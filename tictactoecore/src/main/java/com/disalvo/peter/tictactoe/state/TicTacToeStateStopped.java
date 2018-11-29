@@ -21,7 +21,7 @@ public class TicTacToeStateStopped implements TicTacToeState {
     }
 
     @Override
-    public TicTacToeState next(BoardCondition endCondition) {
+    public TicTacToeState next(BoardCondition boardCondition) {
         throw new GameExceptionAlreadyStopped();
     }
 }

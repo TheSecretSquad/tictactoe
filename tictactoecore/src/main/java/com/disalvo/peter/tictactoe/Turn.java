@@ -21,7 +21,7 @@ public class Turn {
         return null;
     }
 
-    public Turn next(BoardCondition endCondition) {
-        return endCondition.next(this);
+    public Turn next(BoardCondition boardCondition) {
+        return boardCondition.next(this);
     }
 }

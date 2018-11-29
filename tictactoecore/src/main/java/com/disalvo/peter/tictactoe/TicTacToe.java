@@ -11,11 +11,11 @@ public class TicTacToe implements Game {
     private static final Mark O = new Mark("o");
 
     private final GameListener listener;
-    private final BoardEvaluation endEvaluation;
+    private final BoardEvaluation boardEvaluation;
     private TicTacToeState state;
     private Board board;
     private Turn turn;
-    private BoardCondition endCondition;
+    private BoardCondition boardCondition;
 
     public TicTacToe(GameListener listener) {
         this(listener, new Board());
@@ -36,14 +36,14 @@ public class TicTacToe implements Game {
                       TicTacToeState state,
                       Board board,
                       Turn turn,
-                      BoardEvaluation endEvaluation,
-                      BoardCondition endCondition) {
+                      BoardEvaluation boardEvaluation,
+                      BoardCondition boardCondition) {
         this.listener = listener;
         this.state = state;
         this.board = board;
         this.turn = turn;
-        this.endEvaluation = endEvaluation;
-        this.endCondition = endCondition;
+        this.boardEvaluation = boardEvaluation;
+        this.boardCondition = boardCondition;
     }
 
     @Override
@@ -75,10 +75,10 @@ public class TicTacToe implements Game {
         }
 
         board = board.withMarkAtPosition(mark, position);
-        endCondition = endEvaluation.result(board, mark);
-        state = state.next(endCondition);
-        turn = turn.next(endCondition);
-        endCondition.announceTo(conditionAnnouncerForPlay(mark, position));
+        boardCondition = boardEvaluation.result(board, mark);
+        state = state.next(boardCondition);
+        turn = turn.next(boardCondition);
+        boardCondition.announceTo(conditionAnnouncerForPlay(mark, position));
         return this;
     }
 
@@ -90,7 +90,7 @@ public class TicTacToe implements Game {
     public Game printOn(GameMedia gameMedia) {
         board.printOn(gameMedia);
         turn.printOn(gameMedia);
-        endCondition.printOn(gameMedia);
+        boardCondition.printOn(gameMedia);
         return this;
     }
 }
