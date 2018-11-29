@@ -10,5 +10,4 @@ public class BoardEvaluationNone implements BoardEvaluation {
     public BoardCondition result(Board board, Mark mark) {
         return new BoardConditionNone();
     }
-
 }

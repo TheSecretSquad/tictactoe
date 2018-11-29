@@ -93,5 +93,4 @@ public class TicTacToe implements Game {
         endCondition.printOn(gameMedia);
         return this;
     }
-
 }
