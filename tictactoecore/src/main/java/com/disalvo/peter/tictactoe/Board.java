@@ -52,10 +52,6 @@ public class Board {
         return StreamSupport.stream(positionCollection.spliterator(), true).allMatch(p -> isPositionOccupiedByMark(p, mark));
     }
 
-    public boolean isEmptyPosition(Position position) {
-        return !isOccupied(position);
-    }
-
     private boolean isOccupied(Position position) {
         return positions.containsKey(position);
     }
@@ -87,6 +83,15 @@ public class Board {
         return onNotFound.notFound();
     }
 
+    public Board validate(Position position, BoardValidationListener boardValidationListener) {
+        if(!isOccupied(position))
+            boardValidationListener.validPosition();
+        else
+            boardValidationListener.invalidPosition();
+
+        return this;
+    }
+
     @FunctionalInterface
     public interface OnPositionCollectionNotFound<T> {
         T notFound();
@@ -112,5 +117,11 @@ public class Board {
         } else {
             boardMedia.printEmptyPosition(position);
         }
+    }
+
+    public interface BoardValidationListener {
+        BoardValidationListener validPosition();
+
+        BoardValidationListener invalidPosition();
     }
 }

@@ -6,12 +6,18 @@ import com.disalvo.peter.tictactoe.evaluation.BoardEvaluationNone;
 import com.disalvo.peter.tictactoe.evaluation.BoardEvaluationUniformDimension;
 import com.disalvo.peter.tictactoe.state.TicTacToeStateInitial;
 
-public class TicTacToe implements Game {
+import static com.disalvo.peter.tictactoe.Board.BoardValidationListener;
+import static com.disalvo.peter.tictactoe.BoardCondition.BoardConditionListener;
+import static com.disalvo.peter.tictactoe.Play.Playable;
+import static com.disalvo.peter.tictactoe.Turn.TurnValidationListener;
+
+public class TicTacToe implements Game, TurnValidationListener, BoardValidationListener, Playable, BoardConditionListener {
     private static final Mark X = new Mark("x");
     private static final Mark O = new Mark("o");
 
     private final GameListener listener;
     private final BoardEvaluation boardEvaluation;
+    private Play play;
     private TicTacToeState state;
     private Board board;
     private Turn turn;
@@ -44,6 +50,7 @@ public class TicTacToe implements Game {
         this.turn = turn;
         this.boardEvaluation = boardEvaluation;
         this.boardCondition = boardCondition;
+        this.play = new PlayState();
     }
 
     @Override
@@ -63,27 +70,25 @@ public class TicTacToe implements Game {
     @Override
     public TicTacToe playMarkAtPosition(Mark mark, Position position) {
         state.ensureCanPlay();
-
-        if (!turn.canPlay(mark)) {
-            listener.invalidMark(this, mark);
-            return this;
-        }
-
-        if (!board.isEmptyPosition(position)) {
-            listener.invalidPosition(this, position, mark);
-            return this;
-        }
-
-        board = board.withMarkAtPosition(mark, position);
-        boardCondition = boardEvaluation.result(board, mark);
-        state = state.next(boardCondition);
-        turn = turn.next(boardCondition);
-        boardCondition.announceTo(conditionAnnouncerForPlay(mark, position));
+        play = play.begin();
+        turn.validate(mark, this);
+        board.validate(position, this);
+        play.apply(mark, position, this);
+        play = play.end();
         return this;
     }
 
-    private TicTacToeConditionAnnouncer conditionAnnouncerForPlay(Mark mark, Position position) {
-        return new TicTacToeConditionAnnouncer(this, listener, mark, position);
+    @Override
+    public Playable play(Mark mark, Position position) {
+        board = board.withMarkAtPosition(mark, position);
+        boardCondition = boardEvaluation.result(board, mark);
+        boardCondition.resolve(this);
+        boardCondition.resolve(conditionAnnouncerForPlay(mark, position));
+        return this;
+    }
+
+    private TicTacToeBoardConditionListener conditionAnnouncerForPlay(Mark mark, Position position) {
+        return new TicTacToeBoardConditionListener(this, listener, mark, position);
     }
 
     @Override
@@ -91,6 +96,60 @@ public class TicTacToe implements Game {
         board.printOn(gameMedia);
         turn.printOn(gameMedia);
         boardCondition.printOn(gameMedia);
+        return this;
+    }
+
+    @Override
+    public TurnValidationListener validTurn() {
+        play = play.validTurn();
+        return this;
+    }
+
+    @Override
+    public TurnValidationListener invalidTurn() {
+        play = play.invalidTurn();
+        return this;
+    }
+
+    @Override
+    public BoardValidationListener validPosition() {
+        play = play.validPosition();
+        return this;
+    }
+
+    @Override
+    public BoardValidationListener invalidPosition() {
+        play = play.invalidPosition();
+        return this;
+    }
+
+    @Override
+    public Playable invalidPosition(Mark mark, Position position) {
+        listener.invalidPosition(this, position, mark);
+        return this;
+    }
+
+    @Override
+    public Playable invalidMark(Mark mark) {
+        listener.invalidMark(this, mark);
+        return this;
+    }
+
+    @Override
+    public BoardConditionListener continuePlay() {
+        turn = turn.next();
+        return this;
+    }
+
+    @Override
+    public BoardConditionListener winningPlay() {
+        state = state.stop();
+        return this;
+    }
+
+    @Override
+    public BoardConditionListener stalemate() {
+        state = state.stop();
         return this;
     }
 }

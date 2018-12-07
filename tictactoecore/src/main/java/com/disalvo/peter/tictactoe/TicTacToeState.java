@@ -7,6 +7,4 @@ public interface TicTacToeState {
     TicTacToeState stop();
 
     TicTacToeState ensureCanPlay();
-
-    TicTacToeState next(BoardCondition boardCondition);
 }

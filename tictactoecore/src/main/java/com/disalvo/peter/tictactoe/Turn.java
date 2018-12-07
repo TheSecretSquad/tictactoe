@@ -13,15 +13,22 @@ public class Turn {
         return new Turn(next, current);
     }
 
-    public boolean canPlay(Mark mark) {
-        return this.current.equals(mark);
-    }
-
     public Turn printOn(TurnMedia turnMedia) {
         return null;
     }
 
-    public Turn next(BoardCondition boardCondition) {
-        return boardCondition.next(this);
+    public Turn validate(Mark mark, TurnValidationListener turnValidationListener) {
+        if(this.current.equals(mark))
+            turnValidationListener.validTurn();
+        else
+            turnValidationListener.invalidTurn();
+
+        return this;
+    }
+
+    public interface TurnValidationListener {
+        TurnValidationListener validTurn();
+
+        TurnValidationListener invalidTurn();
     }
 }

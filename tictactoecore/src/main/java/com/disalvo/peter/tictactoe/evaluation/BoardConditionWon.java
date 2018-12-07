@@ -1,6 +1,8 @@
 package com.disalvo.peter.tictactoe.evaluation;
 
-import com.disalvo.peter.tictactoe.*;
+import com.disalvo.peter.tictactoe.BoardCondition;
+import com.disalvo.peter.tictactoe.BoardConditionMedia;
+import com.disalvo.peter.tictactoe.PositionCollection;
 
 class BoardConditionWon implements BoardCondition {
 
@@ -11,23 +13,13 @@ class BoardConditionWon implements BoardCondition {
     }
 
     @Override
-    public BoardCondition announceTo(ConditionAnnouncer conditionAnnouncer) {
-        conditionAnnouncer.winningPlay();
+    public BoardCondition resolve(BoardConditionListener boardConditionListener) {
+        boardConditionListener.winningPlay();
         return this;
     }
 
     @Override
     public BoardCondition printOn(BoardConditionMedia boardConditionMedia) {
         return null;
-    }
-
-    @Override
-    public TicTacToeState next(TicTacToeState ticTacToeState) {
-        return ticTacToeState.stop();
-    }
-
-    @Override
-    public Turn next(Turn turn) {
-        return turn;
     }
 }

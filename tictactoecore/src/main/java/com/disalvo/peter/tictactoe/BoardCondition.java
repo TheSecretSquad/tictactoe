@@ -2,19 +2,15 @@ package com.disalvo.peter.tictactoe;
 
 public interface BoardCondition {
 
-    BoardCondition announceTo(ConditionAnnouncer conditionAnnouncer);
+    BoardCondition resolve(BoardConditionListener boardConditionListener);
 
     BoardCondition printOn(BoardConditionMedia boardConditionMedia);
 
-    TicTacToeState next(TicTacToeState current);
+    interface BoardConditionListener {
+        BoardConditionListener continuePlay();
 
-    Turn next(Turn current);
+        BoardConditionListener winningPlay();
 
-    interface ConditionAnnouncer {
-        ConditionAnnouncer continuePlay();
-
-        ConditionAnnouncer winningPlay();
-
-        ConditionAnnouncer stalemate();
+        BoardConditionListener stalemate();
     }
 }

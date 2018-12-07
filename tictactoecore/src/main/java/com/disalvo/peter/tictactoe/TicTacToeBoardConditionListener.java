@@ -1,13 +1,13 @@
 package com.disalvo.peter.tictactoe;
 
-class TicTacToeConditionAnnouncer implements BoardCondition.ConditionAnnouncer {
+class TicTacToeBoardConditionListener implements BoardCondition.BoardConditionListener {
 
     private final Game game;
     private final GameListener gameListener;
     private final Mark mark;
     private final Position position;
 
-    public TicTacToeConditionAnnouncer(Game game, GameListener gameListener, Mark mark, Position Position) {
+    public TicTacToeBoardConditionListener(Game game, GameListener gameListener, Mark mark, Position Position) {
 
         this.game = game;
         this.gameListener = gameListener;
@@ -16,19 +16,19 @@ class TicTacToeConditionAnnouncer implements BoardCondition.ConditionAnnouncer {
     }
 
     @Override
-    public BoardCondition.ConditionAnnouncer continuePlay() {
+    public BoardCondition.BoardConditionListener continuePlay() {
         gameListener.continuePlay(game, mark, position);
         return this;
     }
 
     @Override
-    public BoardCondition.ConditionAnnouncer winningPlay() {
+    public BoardCondition.BoardConditionListener winningPlay() {
         gameListener.winningPlay(game, mark, position);
         return this;
     }
 
     @Override
-    public BoardCondition.ConditionAnnouncer stalemate() {
+    public BoardCondition.BoardConditionListener stalemate() {
         gameListener.stalemate(game, mark, position);
         return this;
     }
