@@ -1,6 +1,6 @@
 package com.disalvo.peter.tictactoe;
 
-public class PlayState implements Play {
+public class PlayState {
 
     private final boolean isTurnValid;
     private final boolean isPositionValid;
@@ -14,28 +14,23 @@ public class PlayState implements Play {
         this.isPositionValid = isPositionValid;
     }
 
-    @Override
-    public Play validTurn() {
+    public PlayState validTurn() {
         return new PlayState(true, isPositionValid);
     }
 
-    @Override
-    public Play invalidTurn() {
+    public PlayState invalidTurn() {
         return new PlayState(false, isPositionValid);
     }
 
-    @Override
-    public Play validPosition() {
+    public PlayState validPosition() {
         return new PlayState(isTurnValid, true);
     }
 
-    @Override
-    public Play invalidPosition() {
+    public PlayState invalidPosition() {
         return new PlayState(isTurnValid, false);
     }
 
-    @Override
-    public Play apply(Mark mark, Position position, Playable playable) {
+    public PlayState apply(Mark mark, Position position, Playable playable) {
         if(!isTurnValid) {
             playable.invalidMark(mark);
             return this;
@@ -50,13 +45,19 @@ public class PlayState implements Play {
         return this;
     }
 
-    @Override
-    public Play begin() {
+    public PlayState begin() {
         return new PlayState(false, false);
     }
 
-    @Override
-    public Play end() {
+    public PlayState end() {
         return new PlayState(false, false);
+    }
+
+    interface Playable {
+        Playable invalidPosition(Mark mark, Position position);
+
+        Playable invalidMark(Mark mark);
+
+        Playable play(Mark mark, Position position);
     }
 }

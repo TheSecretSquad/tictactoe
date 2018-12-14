@@ -8,7 +8,7 @@ import com.disalvo.peter.tictactoe.state.TicTacToeStateInitial;
 
 import static com.disalvo.peter.tictactoe.Board.BoardValidationListener;
 import static com.disalvo.peter.tictactoe.BoardCondition.BoardConditionListener;
-import static com.disalvo.peter.tictactoe.Play.Playable;
+import static com.disalvo.peter.tictactoe.PlayState.Playable;
 import static com.disalvo.peter.tictactoe.Turn.TurnValidationListener;
 
 public class TicTacToe implements Game, TurnValidationListener, BoardValidationListener, Playable, BoardConditionListener {
@@ -17,7 +17,7 @@ public class TicTacToe implements Game, TurnValidationListener, BoardValidationL
 
     private final GameListener listener;
     private final BoardEvaluation boardEvaluation;
-    private Play play;
+    private PlayState playState;
     private TicTacToeState state;
     private Board board;
     private Turn turn;
@@ -34,7 +34,8 @@ public class TicTacToe implements Game, TurnValidationListener, BoardValidationL
                 board,
                 new Turn(X, O),
                 new BoardEvaluationUniformDimension(new BoardEvaluationFilled(new BoardEvaluationNone())),
-                new BoardConditionNone()
+                new BoardConditionNone(),
+                new PlayState()
         );
     }
 
@@ -43,14 +44,15 @@ public class TicTacToe implements Game, TurnValidationListener, BoardValidationL
                       Board board,
                       Turn turn,
                       BoardEvaluation boardEvaluation,
-                      BoardCondition boardCondition) {
+                      BoardCondition boardCondition,
+                      PlayState playState) {
         this.listener = listener;
         this.state = state;
         this.board = board;
         this.turn = turn;
         this.boardEvaluation = boardEvaluation;
         this.boardCondition = boardCondition;
-        this.play = new PlayState();
+        this.playState = playState;
     }
 
     @Override
@@ -70,11 +72,11 @@ public class TicTacToe implements Game, TurnValidationListener, BoardValidationL
     @Override
     public TicTacToe playMarkAtPosition(Mark mark, Position position) {
         state.ensureCanPlay();
-        play = play.begin();
+        playState = playState.begin();
         turn.validate(mark, this);
         board.validate(position, this);
-        play.apply(mark, position, this);
-        play = play.end();
+        playState.apply(mark, position, this);
+        playState = playState.end();
         return this;
     }
 
@@ -101,25 +103,25 @@ public class TicTacToe implements Game, TurnValidationListener, BoardValidationL
 
     @Override
     public TurnValidationListener validTurn() {
-        play = play.validTurn();
+        playState = playState.validTurn();
         return this;
     }
 
     @Override
     public TurnValidationListener invalidTurn() {
-        play = play.invalidTurn();
+        playState = playState.invalidTurn();
         return this;
     }
 
     @Override
     public BoardValidationListener validPosition() {
-        play = play.validPosition();
+        playState = playState.validPosition();
         return this;
     }
 
     @Override
     public BoardValidationListener invalidPosition() {
-        play = play.invalidPosition();
+        playState = playState.invalidPosition();
         return this;
     }
 
