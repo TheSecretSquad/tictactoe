@@ -7,8 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="tictactoecore" />
-        <module name="tictactoeui" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="tictactoeui" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -20,7 +20,6 @@
 
     <modules>
         <module>tictactoecore</module>
-        <module>tictactoeui</module>
     </modules>
 
     <packaging>pom</packaging>
